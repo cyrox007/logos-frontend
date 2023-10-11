@@ -1,0 +1,17 @@
+<template>
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__wrapper">JSInteractive</div>
+        </div>
+    </footer>
+</template>
+
+<script>
+    export default {
+        name: "PageFooter",
+        components: {},
+        data () {
+            return null
+        }
+    }
+</script>
