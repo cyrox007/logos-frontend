@@ -11,11 +11,11 @@
                     <!--  -->
                     <div class="login__form_row" id="">
                         <p class="login__form_label">Email или Телефон</p>
-                        <input type="text" name="login" id="login" class="login__form_input">
+                        <input type="email" name="login" id="login" class="login__form_input">
                     </div>
                     <div class="login__form_row" id="">
                         <p class="login__form_label">Пароль</p>
-                        <input type="text" name="password" id="password" class="login__form_input">
+                        <input type="password" name="password" id="password" class="login__form_input">
                     </div>
                     <button type="submit" @click="sendData">Войти</button>
                 </form>
