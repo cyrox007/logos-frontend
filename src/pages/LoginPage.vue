@@ -57,8 +57,12 @@
                     loginType: this.definition_login_entity(document.getElementById("login").value),
                     password: hashMethods.passwordToHash(document.getElementById("password").value),
                 };
-                let response = await AuthService.login(data);
-                console.log(response);
+                try {
+                    let response = await AuthService.login(data);
+                    console.log(response);
+                } catch (error) {
+                    console.log(error);
+                }
             },
             async getToken () {
                 try {

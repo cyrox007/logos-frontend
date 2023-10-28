@@ -8,8 +8,8 @@ import RegistrationPage from '@/pages/RegistrationPage.vue'
 const routes = [
     {path: '/', component: MainPage },
     {path: '/about', component: AboutPage },
-    {path: '/login', component: LoginPage },
-    {path: '/registration', component: RegistrationPage }
+    {path: '/login', component: LoginPage, meta: { requestAuth: false } },
+    {path: '/registration', component: RegistrationPage, meta: { requestAuth: false } }
 ]
 
 const router = createRouter({

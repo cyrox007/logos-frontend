@@ -33,7 +33,7 @@
                     </div>
                 
                 </div>
-                <div v-if="auth" class="header__profile-nav">
+                <div v-if="$store.getters.getAuth" class="header__profile-nav">
                   <div @click="$router.push(`/user/${userid}`)" class="header__auth_item">
                         {{ username }}
                     </div>
@@ -100,8 +100,8 @@
         data () {
             return {
               auth: Boolean(localStorage.getItem('auth')),
-              username: String(localStorage.getItem("username")),
-              userid: String(localStorage.getItem('userid'))
+              /* username: String(localStorage.getItem("username")),
+              userid: String(localStorage.getItem('userid')) */
             }
         },
         
