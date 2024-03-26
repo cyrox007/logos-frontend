@@ -1,36 +1,19 @@
 <template>
     <section class="last-articles">
         <div class="container">
-            <h1>Сайт стартует</h1>
-            <h2>Ожидайте</h2>
-            <ul>
-                <li>База знаний</li>
-                <li>Полезные статьи</li>
-                <li>Мессенджер</li>
-            </ul>
-            <div class="last-articles__wrapper">
-                <!-- <div class="last-articles__item" v-for="post in posts" :key="post.id">
-                    <LastArticles 
-                        v-bind:id="post.id"
-                        v-bind:title="post.title"
-                        v-bind:images="post.images"
-                        v-bind:category="post.category"
-                        v-bind:slug="post.slug"
-                    />
-                    
-                </div> -->
-                
+            <div class="last-articles__wrapper" style="filter: blur(3px); pointer-events: none;">
+                <LastArticles :posts="posts"/>
             </div>
         </div>
     </section>
 </template>
 
 <script>
-    /* import LastArticles from '@/components/Articles/LastArticles.vue' */
+    import LastArticles from '@/components/Articles/LastArticles.vue' 
     export default {
         name: "MainPage",
         components: {
-            /* LastArticles */
+            LastArticles 
         },
         beforeMount() {
             document.title = "Logos"
@@ -40,25 +23,28 @@
             return {
                 posts: [
                     {
-                        id: 1, 
-                        title: 'test',
-                        images: 'i',
-                        category: 'c',
-                        slug: 's'
+                        uid: "fjdkfsd-fse-fse-fSCd-sC", 
+                        title: 'article 1',
+                        images: 'https://r4.wallpaperbetter.com/wallpaper/1008/573/262/the-sky-clouds-trees-landscape-wallpaper-dcb4070adceb26342be4e9ebf685ac19.jpg',
+                        category: 'category',
+                        tags: ["tag1", "tag2", "tag3"],
+                        slug: 'article_1'
                     },
                     {
-                        id: 2, 
-                        title: 'test',
-                        images: 'i',
-                        category: 'c',
-                        slug: 's'
+                        uid: "fjdkfsd-fse-fse-fSCd-sC", 
+                        title: 'article 2',
+                        images: 'https://r4.wallpaperbetter.com/wallpaper/1008/573/262/the-sky-clouds-trees-landscape-wallpaper-dcb4070adceb26342be4e9ebf685ac19.jpg',
+                        category: 'category',
+                        tags: ["tag1", "tag2", "tag3"],
+                        slug: 'article_2'
                     },
                     {
-                        id: 3, 
-                        title: 'test',
-                        images: 'i',
-                        category: 'c',
-                        slug: 's'
+                        uid: "fjdkfsd-fse-fse-fSCd-sC", 
+                        title: 'article 3',
+                        images: 'https://r4.wallpaperbetter.com/wallpaper/1008/573/262/the-sky-clouds-trees-landscape-wallpaper-dcb4070adceb26342be4e9ebf685ac19.jpg',
+                        category: 'category',
+                        tags: ["tag1", "tag2", "tag3"],
+                        slug: 'article_3'
                     },
                 ]
             }
@@ -72,31 +58,47 @@
     margin: 40px 0;
 }
 .last-articles__wrapper {
-    width: 100%;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, calc(375px / 2));
+    
+    grid-template-columns: repeat(4, 25%);
+    grid-template-rows: repeat(4, 94px);
     grid-template-areas: 
-    "A B"
-    "A C"; 
+    "A A B B"
+    "A A B B"
+    "A A C C"
+    "A A C C";
+}
+.main-article:first-child {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 5;
+    grid-area: A;
+}
+.main-article:nth-child(2) {
+    grid-column-start: 3;
+    grid-column-end: 5;
+    grid-row-start: 1;
+    grid-row-end: 3;
+    grid-area: B;
+}
+.main-article:nth-child(3) {
+    grid-column-start: 3;
+    grid-column-end: 5;
+    grid-row-start: 3;
+    grid-row-end: 5;
+    grid-area: C;
 }
 @media screen and (max-width: 700px) {
     .last-articles__wrapper {
-        grid-template-columns: 1fr;
-        grid-template-rows: repeat(3, calc(375px / 2));
+        grid-template-columns: repeat(1, 100%);
+        grid-template-rows: repeat(3, 150px);
         grid-template-areas: 
         "A"
         "B"
         "C";
     }
+    
 }
-.last-articles__item:first-child {
-    grid-area: A;     
-}
-.last-articles__item:nth-child(2) {
-    grid-area: B;
-}
-.last-articles__item:nth-child(3) {
-    grid-area: C;
-}
+
 </style>
