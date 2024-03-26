@@ -9,15 +9,15 @@
                     </div>
                 
                     <div class="header__social_item">
-                        <a href="/" class="header__social_link">
+                        <a href="https://vk.com/public99835977" target="_blank" class="header__social_link">
                             <i class="fa fa-vk" aria-hidden="true"></i>
                         </a>
                     </div>
-                    <div class="header__social_item">
+                    <!-- <div class="header__social_item">
                         <a href="/" class="header__social_link">
                             <i class="fa fa-vk" aria-hidden="true"></i>
                         </a>
-                    </div>
+                    </div> -->
                 
                 </div>
                 <div class="header__navigate">
@@ -28,27 +28,27 @@
                     <div @click="$router.push('/about')" class="header__navigate_item">
                         <a  class="header__navigate_link">О сайте</a>
                     </div>
-                    <div @click="$router.push('/about')" class="header__navigate_item">
+                    <!-- <div @click="$router.push('/about')" class="header__navigate_item">
                         <a  class="header__navigate_link">Блог</a>
-                    </div>
+                    </div> -->
                 
                 </div>
                 <div v-if="$store.getters.getAuth" class="header__profile-nav">
-                  <div @click="$router.push(`/user/${userid}`)" class="header__auth_item">
+                  <!-- <div @click="$router.push(`/user/${userid}`)" class="header__auth_item">
                         {{ username }}
-                    </div>
-                    <div @click="$router.push('/logout')" class="header__auth_item">
+                  </div>
+                  <div @click="$router.push('/logout')" class="header__auth_item">
                         Выйти
-                    </div>
+                  </div> -->
                 </div>
                 <div v-else class="header__auth">
 
-                    <div @click="$router.push('/login')" class="header__auth_item">
+                    <!-- <div @click="$router.push('/login')" class="header__auth_item">
                         Войти
                     </div>
                     <div @click="$router.push('/registration')" class="header__auth_item">
                         Зарегестрироваться
-                    </div>
+                    </div> -->
                 
                 </div>
                 <div id="mobile-btn" class="header__mobile-btn" @click="mobileNav">
@@ -65,12 +65,12 @@
                         Блог
                     </div>
                     <hr>
-                    <div data-to="/login" @click="hideMNav" class="header__auth_item">
+                    <!-- <div data-to="/login" @click="hideMNav" class="header__auth_item">
                         Войти
                     </div>
                     <div class="header__auth_item">
                         Зарегестрироваться
-                    </div>
+                    </div> -->
                 </nav>
             </div>
         </div>

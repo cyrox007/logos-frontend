@@ -1,8 +1,9 @@
 <template>
     <section class="last-articles">
         <div class="container">
+            <h1>Сайт стартует</h1>
             <div class="last-articles__wrapper">
-                <div class="last-articles__item" v-for="post in posts" :key="post.id">
+                <!-- <div class="last-articles__item" v-for="post in posts" :key="post.id">
                     <LastArticles 
                         v-bind:id="post.id"
                         v-bind:title="post.title"
@@ -10,18 +11,23 @@
                         v-bind:category="post.category"
                         v-bind:slug="post.slug"
                     />
-                </div>
+                    
+                </div> -->
+                
             </div>
         </div>
     </section>
 </template>
 
 <script>
-    import LastArticles from '@/components/Articles/LastArticles.vue'
+    /* import LastArticles from '@/components/Articles/LastArticles.vue' */
     export default {
         name: "MainPage",
         components: {
-            LastArticles
+            /* LastArticles */
+        },
+        beforeMount() {
+            document.title = "Logos"
         },
         data () {
             
