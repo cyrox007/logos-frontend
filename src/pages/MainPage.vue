@@ -2,6 +2,12 @@
     <section class="last-articles">
         <div class="container">
             <h1>Сайт стартует</h1>
+            <h2>Ожидайте</h2>
+            <ul>
+                <li>База знаний</li>
+                <li>Полезные статьи</li>
+                <li>Мессенджер</li>
+            </ul>
             <div class="last-articles__wrapper">
                 <!-- <div class="last-articles__item" v-for="post in posts" :key="post.id">
                     <LastArticles 
