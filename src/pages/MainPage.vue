@@ -1,11 +1,12 @@
 <template>
     <section class="last-articles">
         <div class="container">
-            <div class="last-articles__wrapper" style="filter: blur(3px); pointer-events: none;">
+            <div class="last-articles__wrapper">
                 <LastArticles :posts="posts"/>
             </div>
         </div>
     </section>
+    <section class="other"></section>
 </template>
 
 <script>
@@ -16,7 +17,7 @@
             LastArticles 
         },
         beforeMount() {
-            document.title = "Logos"
+            document.title = "Logos | Главная";
         },
         data () {
             
@@ -100,5 +101,8 @@
     }
     
 }
-
+.other {
+    height: 100%;
+    min-height: 100%;
+}
 </style>

@@ -342,6 +342,9 @@ export default {
             }
         }
     },
+    beforeMount() {
+		document.title = "Logos | Регистрация";
+	},
     data(){
         this.getToken();
         return {

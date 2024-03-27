@@ -21,10 +21,7 @@
 						<a class="header__navigate_link">Главная</a>
 					</div>
 					<div @click="$router.push('/about')" class="header__navigate_item">
-						<a class="header__navigate_link">О сайте</a>
-					</div>
-					<div @click="$router.push('/about')" class="header__navigate_item">
-						<a class="header__navigate_link">Блог</a>
+						<a class="header__navigate_link">База знаний</a>
 					</div>
 
 				</div>
@@ -36,7 +33,7 @@
 						Выйти
 					</div>
 				</div>
-				<div v-else class="header__auth" style="filter: blur(3px); pointer-events: none;">
+				<div v-else class="header__auth">
 
 					<div @click="$router.push('/login')" class="header__auth_item">
 						Войти

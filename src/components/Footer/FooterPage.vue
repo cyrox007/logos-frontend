@@ -1,7 +1,7 @@
 <template>
     <footer class="footer">
         <div class="container">
-            <div class="footer__wrapper">JSInteractive</div>
+            <div class="footer__wrapper">Developed by JSInteractive</div>
         </div>
     </footer>
 </template>
