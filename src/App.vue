@@ -1,5 +1,4 @@
 <template>
-  <!-- <MainPage /> -->
   <HeaderNavbar />
   <router-view></router-view>
   <FooterPage />
@@ -14,6 +13,9 @@ export default {
   components: {
     HeaderNavbar,
     FooterPage
+  },
+  beforeCreate(){
+    document.title = "Logos";
   }
 }
 </script>

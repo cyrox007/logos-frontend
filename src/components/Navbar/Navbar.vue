@@ -25,11 +25,11 @@
 					</div>
 
 				</div>
-				<div v-if="$store.getters.getAuth" class="header__profile-nav">
+				<div class="header__profile-nav"  v-if="$store.getters.isAuth">
 					<div @click="$router.push(`/user/${userid}`)" class="header__auth_item">
-						{{ username }}
+						Профиль
 					</div>
-					<div @click="$router.push('/logout')" class="header__auth_item">
+					<div @click="logout" class="header__auth_item">
 						Выйти
 					</div>
 				</div>
@@ -74,6 +74,7 @@
 	</section>
 </template>
 <script>
+//import AuthService from '@/API/AuthService';
 export default {
 	name: "HeaderNavbar",
 	methods: {
@@ -86,13 +87,26 @@ export default {
 			event.preventDefault();
 			event.target.parentElement.classList.toggle('active');
 			this.$router.push(event.target.dataset.to)
-		}
+		},
+		async logout() {
+            try {
+                //const response = await AuthService.logout();
+                //if (response.data.status == 'ok') {
+                    //localStorage.removeItem("auth");
+                    //localStorage.removeItem('token');
+                    //localStorage.clear();
+                    this.$store.commit("setAuth", false);
+                    this.$router.push('/login');
+                //}
+            } catch (error) {
+                console.error(error);
+            }
+            
+        }
 	},
 	data() {
 		return {
-			auth: Boolean(localStorage.getItem('auth')),
-			/* username: String(localStorage.getItem("username")),
-			userid: String(localStorage.getItem('userid')) */
+			
 		}
 	},
 
@@ -212,7 +226,9 @@ export default {
 	padding: 15px;
 	cursor: pointer;
 }
-
+.header__profile-nav {
+	display: flex;
+}
 .header__mobile-btn i {
 	color: var(--color-white);
 	font-size: 20px;

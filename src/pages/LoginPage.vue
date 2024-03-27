@@ -17,7 +17,7 @@
 						<p class="login__form_label">Пароль</p>
 						<input type="password" name="password" id="password" class="login__form_input">
 					</div>
-					<button type="submit" @click="sendData">Войти</button>
+					<button type="submit" @click="(event)=>{event.preventDefault(); $store.commit('setAuth', true); $router.push({ name: 'home' })}">Войти</button>
 				</form>
 			</div>
 		</div>
