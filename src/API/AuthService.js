@@ -5,12 +5,12 @@ export default class AuthService {
         return $api.post('/auth/registration', data);
     }
     static async login(data) {
-        return $api.post('/login', data);
+        return $api.post('/auth/login', data);
     }
     static async getRegisterToken() {
         return $api.get('/auth/registration');
     }
     static async getLoginToken() {
-        return $api.get('/login');
+        return $api.get('/auth/login');
     }
 }

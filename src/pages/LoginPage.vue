@@ -1,14 +1,17 @@
 <template>
 	<section class="login">
 		<div class="container">
-			<div class="login__wrapper">
+			<div class="login__wrapper" style="display: flex; justify-content: center;" v-if="isLoading">
+				<ContentLoader/>
+			</div>
+			<div class="login__wrapper" v-else>
 				<h1 class="login--title">Форма авторизации</h1>
 				<form action="" method="post" class="login__form">
-					<!--  -->
-					<input type="hidden" id="iphash" name="ip-hash" :value="csrf.iphash">
-					<input type="hidden" id="request-tokent" name="request-tokent" :value="csrf.requestToken">
-					<input type="hidden" id="sig" name="sig" :value="csrf.sig">
-					<!--  -->
+					<FormCSRF 
+                        :ipHash="csrf.ipHash"
+                        :requestToken="csrf.requestToken"
+                        :sig="csrf.sig"
+                    />
 					<div class="login__form_row" id="">
 						<p class="login__form_label">Email или Телефон</p>
 						<input type="email" name="login" id="login" class="login__form_input">
@@ -17,7 +20,8 @@
 						<p class="login__form_label">Пароль</p>
 						<input type="password" name="password" id="password" class="login__form_input">
 					</div>
-					<button type="submit" @click="(event)=>{event.preventDefault(); $store.commit('setAuth', true); $router.push({ name: 'home' })}">Войти</button>
+					<!-- <button type="submit" @click="(event)=>{event.preventDefault(); $store.commit('setAuth', true); $router.push({ name: 'home' })}">Войти</button> -->
+					<FormButton :isLoading="loadBtn" btnText="Зарегестрироваться" :btnFunc="sendData"/> 
 				</form>
 			</div>
 		</div>
@@ -25,11 +29,21 @@
 </template>
 
 <script>
+import FormCSRF from '@/components/UI/FormCSRF'
+/* import FormInput from '@/components/UI/FormInput' */
+import FormButton from '@/components/UI/FormButton'
+import ContentLoader from '@/components/UI/ContentLoader'
+
 import AuthService from '@/API/AuthService'
 import hashMethods from '@/utils/hashMethods'
 export default {
 	name: "LoginPage",
-	components: {},
+	components: {
+		FormCSRF,
+        /* FormInput, */
+        FormButton,
+        ContentLoader
+	},
 	props: {},
 	methods: {
 		definition_login_entity(fieldValue) {
@@ -45,6 +59,7 @@ export default {
 		},
 		async sendData(event) {
 			event.preventDefault();
+			this.loadBtn = true;
 			if (!this.definition_login_entity(document.getElementById("login").value)) return;
 			
 			let data = {
@@ -58,26 +73,42 @@ export default {
 			};
 			try {
 				let response = await AuthService.login(data);
-				console.log(response);
+				if (response.data.status == 'ok') {
+
+                    this.$router.push({name: 'home'})
+                } 
+                
+                if (response.data.status == 'bed') {
+                    //this.errorMsg = response.data.error_type;
+                }
 			} catch (error) {
 				console.log(error);
+			} finally {
+				this.loadBtn = true;
 			}
 		},
 		async getToken() {
+			this.isLoading = true;
 			try {
 				let response = await AuthService.getLoginToken().then(result => result);
-				this.csrf = response.data;
+				this.csrf = response.data.data.csrf;
 			} catch (error) {
 				console.error(error);
+			} finally {
+				this.isLoading = false;
 			}
 		}
 	},
 	beforeMount() {
 		document.title = "Logos | Авторизация";
 	},
+	mounted() {
+		this.getToken();
+	},
 	data() {
-		//this.getToken();
 		return {
+			loadBtn: false,
+            isLoading: false,
 			csrf: {}
 		};
 	}
