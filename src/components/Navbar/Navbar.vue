@@ -74,7 +74,7 @@
 	</section>
 </template>
 <script>
-//import AuthService from '@/API/AuthService';
+import AuthService from '@/API/AuthService';
 export default {
 	name: "HeaderNavbar",
 	methods: {
@@ -90,14 +90,14 @@ export default {
 		},
 		async logout() {
             try {
-                //const response = await AuthService.logout();
-                //if (response.data.status == 'ok') {
-                    //localStorage.removeItem("auth");
-                    //localStorage.removeItem('token');
-                    //localStorage.clear();
+                const response = await AuthService.logout();
+                if (response.data.status == 'ok') {
+                    localStorage.removeItem("auth");
+                    localStorage.removeItem('token');
+                    localStorage.clear();
                     this.$store.commit("setAuth", false);
                     this.$router.push('/login');
-                //}
+                }
             } catch (error) {
                 console.error(error);
             }

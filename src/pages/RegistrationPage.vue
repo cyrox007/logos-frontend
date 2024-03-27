@@ -1,21 +1,25 @@
 <template>
     <section class="registration">
         <div class="container">
-            <div class="registration__wrapper">
+            <div class="registration__wrapper" style="display: flex; justify-content: center;" v-if="isLoading">
+                <ContentLoader/>
+            </div>
+            <div class="registration__wrapper" v-else>
                 <h1>Форма регистрации</h1>
                 <p>* - поля отмеченные звездочкой обязательны для заполнения</p>
                 <form action="" method="post" class="registration__form" id="registration-form">
-                    <!--  -->
-                    <input type="hidden" id="iphash" name="ip-hash" :value="csrf.iphash">
-                    <input type="hidden" id="request-tokent" name="request-tokent" :value="csrf.requestToken">
-                    <input type="hidden" id="sig" name="sig" :value="csrf.sig"> 
-                    <!--  -->
+                    <FormCSRF 
+                        :ipHash="csrf.ipHash"
+                        :requestToken="csrf.requestToken"
+                        :sig="csrf.sig"
+                    />
                     <div class="registration__form_group">
                         <div class="registration__form_row">
                             <p class="registration__form_label">Фамилия <span>*</span></p>
                             <input type="text" name="last-name" id="last-name" class="registration__form_input" @change="dataRequaired($event), dataCyrillic($event)" required>
                             <span id="er"></span>
                         </div>
+                        
                         <div class="registration__form_row">
                             <p class="registration__form_label">Имя <span>*</span></p>
                             <input type="text" name="first-name" id="first-name" class="registration__form_input" @change="dataRequaired($event), dataCyrillic($event)" required>
@@ -84,7 +88,7 @@
 
                         </ul>
                     </div>
-                    <button id="btn-submit" type="submit" @click="sendData">Зарегестрироваться</button>                
+                    <FormButton :isLoading="loadBtn" btnText="Зарегестрироваться" :btnFunc="sendData"/>          
                 </form>
             </div>
         </div>
@@ -92,11 +96,20 @@
 </template>
 
 <script>
+import FormCSRF from '@/components/UI/FormCSRF'
+/* import FormInput from '@/components/UI/FormInput' */
+import FormButton from '@/components/UI/FormButton'
+import ContentLoader from '@/components/UI/ContentLoader'
 import AuthService from '@/API/AuthService'
 import hashMethods from '@/utils/hashMethods'
 export default {
     name: 'RegistrationPage',
-    components: {},
+    components: {
+        FormCSRF,
+        /* FormInput, */
+        FormButton,
+        ContentLoader
+    },
     props: {},
     computed: {
         
@@ -302,6 +315,7 @@ export default {
         },
         async sendData(event){
             event.preventDefault();
+            this.loadBtn = true;
             const form = document.getElementById("registration-form");
             let errors = form.getElementsByClassName("error");
             if (errors.length > 0) { return; }
@@ -309,45 +323,68 @@ export default {
             if (!this.finalCheckedFields()) { return; }
 
             let data = {
-                requestToken: document.getElementById("request-tokent").value,
-                ip_hash: document.getElementById("iphash").value,
-                sig: document.getElementById("sig").value,
+                formTokens: {
+                    requestToken: document.getElementById("requestTokent").value,
+                    ip_hash: document.getElementById("ipHash").value,
+                    sig: document.getElementById("sig").value,
+                },
+                registration_data: {
+                    surname: document.getElementById("last-name").value,
+                    firstname: document.getElementById("first-name").value,
+                    patronymic: document.getElementById("patronymic").value,
+                    email: document.getElementById("email").value,
+                    phone: document.getElementById("phone").value,
+                    password: hashMethods.passwordToHash(document.getElementById("password").value),
 
-                lastname: document.getElementById("last-name").value,
-                firstname: document.getElementById("first-name").value,
-                patronymic: document.getElementById("patronymic").value,
-                email: document.getElementById("email").value,
-                phone: document.getElementById("phone").value,
-                password: hashMethods.passwordToHash(document.getElementById("password").value),
+                    monc: document.getElementById("is-monc").checked,
+                    moncname: document.getElementById('is-monc').checked ? document.getElementById('monc-name').value : null,
 
-                isMonc: document.getElementById("is-monc").checked,
-                moncName: document.getElementById('is-monc').checked ? document.getElementById('monc-name').value : null,
-
-
-                isHolyOrder: document.getElementById("holy-orders").checked,
-                holyOrder: document.getElementById('holy-orders').checked ? document.getElementById('holy-orders-list').options[document.getElementById('holy-orders-list').selectedIndex].text : null,
-                
-                country: document.getElementById("country").value,
-                city: document.getElementById("city").value
+                    holy_orders: document.getElementById("holy-orders").checked,
+                    holy_orders_type: document.getElementById('holy-orders').checked ? document.getElementById('holy-orders-list').options[document.getElementById('holy-orders-list').selectedIndex].text : null,
+                    
+                    country: document.getElementById("country").value,
+                    city: document.getElementById("city").value
+                }
             };
-            let response = await AuthService.registration(data);
-            console.log(response);
+            try {
+                let response = await AuthService.registration(data);
+                if (response.data.status == 'ok') {
+                    this.$router.push({name: 'login'})
+                } 
+                
+                if (response.data.status == 'bed') {
+                    //this.errorMsg = response.data.error_type;
+                }
+            } catch (error) {
+                console.log(error);
+            } finally {
+                this.loadBtn = false;
+            }
         },
         async getToken () {
+            this.isLoading = true;
             try {
                 let response = await AuthService.getRegisterToken().then(result=>result);
-                this.csrf = response.data;
+                this.csrf = response.data.data.csrf;
+                
             } catch (error) {
                 console.error(error);
+            } finally {
+                this.isLoading = false;
             }
         }
     },
     beforeMount() {
 		document.title = "Logos | Регистрация";
 	},
-    data(){
+    mounted () {
         this.getToken();
+    },
+    data(){
+        
         return {
+            loadBtn: false,
+            isLoading: false,
             moncField: false,
             csrf: {}
         }
@@ -385,6 +422,7 @@ export default {
     flex-direction: column;
   }
 }
+
 .registration__form_row {
     text-align: left;
   flex: 1 1 100%;
@@ -413,6 +451,7 @@ export default {
 .registration__form_input.currect {
   border-color: #28a745;
 }
+
 .registration__form_errors {
   height: 0px;
   margin-top: 20px;
