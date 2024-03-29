@@ -74,7 +74,6 @@ export default {
 			try {
 				let response = await AuthService.login(data);
 				if (response.data.status == 'ok') {
-
                     this.$router.push({name: 'home'})
                 } 
                 
