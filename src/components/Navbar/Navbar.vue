@@ -20,7 +20,7 @@
 					<div @click="$router.push('/')" class="header__navigate_item">
 						<a class="header__navigate_link">Главная</a>
 					</div>
-					<div @click="$router.push('/about')" class="header__navigate_item">
+					<div @click="$router.push({name: 'lecture'})" class="header__navigate_item">
 						<a class="header__navigate_link">База знаний</a>
 					</div>
 
@@ -50,11 +50,8 @@
 					<div data-to="/" @click="hideMNav" class="header__navigate_item">
 						Главная
 					</div>
-					<div data-to="/about" @click="hideMNav" class="header__navigate_item">
-						О сайте
-					</div>
-					<div data-to="/about" @click="hideMNav" class="header__navigate_item">
-						Блог
+					<div data-to="/lecture" @click="hideMNav" class="header__navigate_item">
+						База знаний
 					</div>
 					<hr>
 					<div data-to="/login" @click="hideMNav" class="header__auth_item">

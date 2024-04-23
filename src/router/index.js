@@ -2,7 +2,7 @@ import {createRouter, createWebHistory} from 'vue-router'
 import store from '@/store/index.js'
 
 import MainPage from '@/pages/MainPage.vue'
-import AboutPage from '@/pages/AboutPage.vue'
+import LecturePage from '@/pages/LecturePage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
 import RegistrationPage from '@/pages/RegistrationPage.vue'
 
@@ -10,7 +10,7 @@ import ProfilePage from '@/pages/ProfilePage.vue'
 
 const routes = [
     {path: '/', component: MainPage, name: 'home' },
-    {path: '/about', component: AboutPage },
+    {path: '/lecture', component: LecturePage, name: 'lecture' },
     {path: '/login', component: LoginPage, name: 'login', meta: { requestAuth: false } },
     {path: '/registration', component: RegistrationPage, name: 'logup', meta: { requestAuth: false } },
 
