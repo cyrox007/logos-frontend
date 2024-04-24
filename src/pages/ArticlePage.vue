@@ -57,7 +57,8 @@
             } */
         },
         beforeMount() {
-            document.title = "Logos | База знаний";
+            document.title = `${this.article.name} | База знаний | Logos`;
+            document.querySelector('meta[name="description"]').content = this.article.preview
             /* this.getData(); */
             console.log(this.$route.params.catName);
         },

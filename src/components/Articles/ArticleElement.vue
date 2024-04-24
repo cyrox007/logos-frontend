@@ -26,7 +26,7 @@ export default {
         position: relative;
         width: 100%;
         height: auto;
-        /* max-height: 200px; */
+        
         padding: 20px;
         display: flex;
         cursor: pointer;
@@ -35,7 +35,8 @@ export default {
         text-align: left;
     }
     .article__image {
-        width: 200px;
+        max-width: 200px;
+        width: 100%;
         height: 200px;
     }
     .article__image img {

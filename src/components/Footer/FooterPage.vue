@@ -15,3 +15,9 @@
         }
     }
 </script>
+
+<style>
+    footer.footer {
+        margin-top: 40px;
+    }
+</style>

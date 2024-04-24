@@ -34,7 +34,7 @@
             }
         },
         beforeMount() {
-            document.title = "Logos | База знаний";
+            document.title = "База знаний | Logos";
             /* this.getData(); */
         },
         data () {
