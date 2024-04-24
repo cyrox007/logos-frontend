@@ -3,6 +3,8 @@ import store from '@/store/index.js'
 
 import MainPage from '@/pages/MainPage.vue'
 import LecturePage from '@/pages/LecturePage.vue'
+import LectureListPage from '@/pages/LectureListPage.vue'
+import ArticlePage from '@/pages/ArticlePage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
 import RegistrationPage from '@/pages/RegistrationPage.vue'
 
@@ -10,11 +12,15 @@ import ProfilePage from '@/pages/ProfilePage.vue'
 
 const routes = [
     {path: '/', component: MainPage, name: 'home' },
-    {path: '/lecture', component: LecturePage, name: 'lecture' },
+    
     {path: '/login', component: LoginPage, name: 'login', meta: { requestAuth: false } },
     {path: '/registration', component: RegistrationPage, name: 'logup', meta: { requestAuth: false } },
 
-    {path: '/profile', component: ProfilePage, meta: {requestAuth: true}}
+    {path: '/profile', component: ProfilePage, meta: {requestAuth: true}},
+
+    {path: '/lecture', component: LecturePage, name: 'lecture' },
+    {path: '/lecture/:catName', component: LectureListPage, name: 'category' },
+    {path: '/lecture/:catName/:slug', component: ArticlePage, name: 'article' }
 ]
 
 const router = createRouter({

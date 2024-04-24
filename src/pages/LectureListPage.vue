@@ -1,27 +1,24 @@
 <template>
     <section class="categories">
         <div class="container categories__wrapper">
-            <h1>База знаний</h1>
-            <div class="categories__list" v-if="categories.length > 0">
-                <category-articles :categories="categories"/>
-            </div>
-            <div class="categories__none" v-else>
-                <p>К сожалению администратор еще не добавил ни одной категории и\или статьи. Пожалуйста, ожидайте обновлений</p>
+            <h1>База знаний - {{ categoryname }}</h1>
+            <div class="categories__list">
+                <article-element :articles="articles"/>
             </div>
         </div>
     </section>
 </template>
 
 <script>
-    import CategoryArticles from '@/components/Articles/CategoryArticles.vue';
-    import CategoriesService from '@/API/CategoriesService.js';
+    import ArticleElement from '@/components/Articles/ArticleElement.vue';
+    /* import CategoriesService from '@/API/CategoriesService.js'; */
     export default {
-        name: "LecturePage",
+        name: "LectureListPage",
         components: {
-            CategoryArticles
+            ArticleElement
         },
         methods: {
-            async getData() {
+            /* async getData() {
                 try {
                     this.isLoading = true;
                     const response = await CategoriesService.getCategories();
@@ -31,24 +28,26 @@
                 } finally {
                     this.isLoading = false;
                 }
-            }
+            } */
         },
         beforeMount() {
             document.title = "Logos | База знаний";
             /* this.getData(); */
+            console.log(this.$route.params.catName);
         },
         data () {
-            
             return {
                 isLoading: false,
-                categories: [
+                categoryname: "Философия",
+                articles: [
                     {
-                        uid: 'uid1',
-                        name: 'Философия',
-                        image: 'https://img.icons8.com/ios/100/book--v1.png',
-                        slug: 'philosofia'
-                    },
-                    
+                        uid: "uid-1",
+                        image: "https://img.icons8.com/ios/100/book--v1.png",
+                        name: "Название статьи",
+                        description: "Описание статьи",
+                        catName: this.$route.params.catName,
+                        slug: 'name-article'
+                    }
                 ]
             }
         }
@@ -76,11 +75,5 @@
     justify-content: center;
     gap: 20px;
 }
-.categories__none {
-    padding: 20px;
-    border: 1px solid var(--color-blue);
-    border-radius: 5px;
-    background-color: var(--color-white);
-    font-size: 18px;
-}
+
 </style>

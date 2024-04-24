@@ -1,6 +1,6 @@
 <template>
-    <article class="category" v-for="category in categories" :key="category.uid">
-        <a :href="category.slug">
+    <article class="category" v-for="category in categories" :key="category.uid" @click="$router.push({name: 'category', params: {catName: category.slug}})">
+        <a>
             <div class="category__image">
                 <img :src="category.image" :alt="category.name">
             </div>
