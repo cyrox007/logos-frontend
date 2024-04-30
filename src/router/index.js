@@ -7,6 +7,7 @@ import LectureListPage from '@/pages/LectureListPage.vue'
 import ArticlePage from '@/pages/ArticlePage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
 import RegistrationPage from '@/pages/RegistrationPage.vue'
+import CreateArticlePage from '@/pages/CreateArticlePage.vue'
 
 import ProfilePage from '@/pages/ProfilePage.vue'
 
@@ -20,7 +21,9 @@ const routes = [
 
     {path: '/lecture', component: LecturePage, name: 'lecture' },
     {path: '/lecture/:catName', component: LectureListPage, name: 'category' },
-    {path: '/lecture/:catName/:slug', component: ArticlePage, name: 'article' }
+    {path: '/lecture/:catName/:slug', component: ArticlePage, name: 'article' },
+
+    {path: '/panel/article/create', component: CreateArticlePage, name: 'create-article'}
 ]
 
 const router = createRouter({
