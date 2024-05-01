@@ -23,7 +23,8 @@ const routes = [
     {path: '/lecture/:catName', component: LectureListPage, name: 'category' },
     {path: '/lecture/:catName/:slug', component: ArticlePage, name: 'article' },
 
-    {path: '/panel/article/create', component: MainPage, name: 'create-article'},
+    
+    {path: '/panel', component: CreateArticlePage, name: 'panel' },
 ]
 
 const router = createRouter({
