@@ -4,9 +4,22 @@
             <h1>Создать новую статью</h1>
         </div>
         <div class="container create-article-page__wrapper">
-            <EditorJS :config="config" :initialized="onInitialized" />
-            <FormButton btnText="Save" :btnFunc="saveArticle" />
+            <div class="create-article-page__form">
+                <textarea name="anons" id="" cols="30" rows="10" class="create-article-page__anons" placeholder="Введите аннотацию к статье"></textarea>
+            </div>
+            <div class="create-article-page__form">
+                <input type="text" name="keyword" id="keyword" class="create-article-page__keyword" placeholder="Введите ключевые слова">
+            </div>        
+            
+            <div class="create-article-page__form">
+                <EditorJS :config="config" :initialized="onInitialized" />
+            </div>
+            
+            <div class="" style="margin-top: 40px;">
+                <FormButton btnType="button" btnText="Save" :btnFunc="saveArticle" />
+            </div>
         </div>
+        
     </section>
 </template>
 
@@ -19,10 +32,8 @@ import Header from "@editorjs/header";
 export default {
     name: "CreateArticlePage",
     components: {
-        List,
-        Header,
-        EditorJS,
-        FormButton
+        List, Header,
+        EditorJS, FormButton
     },
     methods: {
         onInitialized(editor) {
@@ -50,6 +61,7 @@ export default {
                         inlineToolbar: true,
                     },
                 },
+                placeholder: "Введите текст статьи",
                 onReady: () => {
                 },
                 onChange: (args) => {
@@ -63,12 +75,26 @@ export default {
 </script>
 
 <style>
-/* .create-article-page {} */
 
 .create-article-page__wrapper {
+    display: flex;
+    flex-direction: column;
+}
+.create-article-page__form {
     margin-top: 40px;
     border: 1px solid var(--color-blue);
     background-color: var(--color-white);
     box-shadow: 0 4px 15px -12px var(--color-black);
+}
+.create-article-page__keyword {
+    width: 100%;
+    height: 50px;
+    padding: 0 15px;
+    border: none;
+}
+.create-article-page__anons {
+    width: 100%;
+    padding: 15px;
+    border: none;
 }
 </style>

@@ -99,12 +99,5 @@ export default {
 </script>
 
 <style>
-/* .create-article-page {} */
 
-.create-article-page__wrapper {
-    margin-top: 40px;
-    border: 1px solid var(--color-blue);
-    background-color: var(--color-white);
-    box-shadow: 0 4px 15px -12px var(--color-black);
-}
 </style>

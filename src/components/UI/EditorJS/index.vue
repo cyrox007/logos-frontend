@@ -249,4 +249,8 @@ export default defineComponent({
 .editor {
     text-align: start;
 }
+.ce-block__content,
+.ce-toolbar__content {
+    max-width: 90%;
+}
 </style>
