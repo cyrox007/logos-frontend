@@ -19,12 +19,12 @@ const routes = [
 
     {path: '/profile', component: ProfilePage, meta: {requestAuth: true}},
 
-    {path: '/lecture', component: LecturePage, name: 'lecture' },
-    {path: '/lecture/:catName', component: LectureListPage, name: 'category' },
-    {path: '/lecture/:catName/:slug', component: ArticlePage, name: 'article' },
+    {path: '/lecture', component: LecturePage, name: 'lecture', meta: {requestAuth: false} },
+    {path: '/lecture/:catName', component: LectureListPage, name: 'category', meta: {requestAuth: false} },
+    {path: '/lecture/:catName/:slug', component: ArticlePage, name: 'article', meta: {requestAuth: false} },
 
     
-    {path: '/panel', component: LecturePage, name: 'panel' }
+    {path: '/panel', component: LecturePage, name: 'panel', meta: {requestAuth: false} }
 ]
 
 const router = createRouter({
