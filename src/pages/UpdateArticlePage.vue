@@ -4,8 +4,20 @@
             <h1>Редактировать статью</h1>
         </div>
         <div class="container create-article-page__wrapper">
-            <EditorJS :config="config" :initialized="onInitialized" />
-            <FormButton btnText="Save" :btnFunc="update" />
+            <div class="create-article-page__form">
+                <textarea name="anons" id="" cols="30" rows="10" class="create-article-page__anons" placeholder="Введите аннотацию к статье"></textarea>
+            </div>
+            <div class="create-article-page__form">
+                <input type="text" name="keyword" id="keyword" class="create-article-page__keyword" placeholder="Введите ключевые слова">
+            </div>        
+            
+            <div class="create-article-page__form">
+                <EditorJS :config="config" :initialized="onInitialized" />
+            </div>
+            
+            <div class="" style="margin-top: 40px;">
+                <FormButton btnType="button" btnText="Save" :btnFunc="saveArticle" />
+            </div>
         </div>
     </section>
 </template>
