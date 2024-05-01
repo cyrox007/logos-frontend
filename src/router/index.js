@@ -24,7 +24,7 @@ const routes = [
     {path: '/lecture/:catName/:slug', component: ArticlePage, name: 'article' },
 
     
-    {path: '/panel', component: CreateArticlePage, name: 'panel' },
+    {path: '/panel', component: LecturePage, name: 'panel' }
 ]
 
 const router = createRouter({
