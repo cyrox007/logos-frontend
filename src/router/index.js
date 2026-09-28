@@ -1,51 +1,34 @@
-import {createRouter, createWebHistory} from 'vue-router'
-import store from '@/store/index.js'
+import { createRouter, createWebHistory } from 'vue-router';
 
-import MainPage from '@/pages/MainPage.vue'
-import LecturePage from '@/pages/LecturePage.vue'
-import LectureListPage from '@/pages/LectureListPage.vue'
-import ArticlePage from '@/pages/ArticlePage.vue'
-import LoginPage from '@/pages/LoginPage.vue'
-import RegistrationPage from '@/pages/RegistrationPage.vue'
-import CreateArticlePage from '@/pages/CreateArticlePage.vue'
-import UpdateArticlePage from '@/pages/UpdateArticlePage.vue'
-
-import ProfilePage from '@/pages/ProfilePage.vue'
+import MainPage from '@/pages/MainPage.vue';
+import LecturePage from '@/pages/LecturePage.vue';
+import LectureListPage from '@/pages/LectureListPage.vue';
+import ArticlePage from '@/pages/ArticlePage.vue';
 
 const routes = [
-    {path: '/', component: MainPage, name: 'home' },
-    
-    {path: '/login', component: LoginPage, name: 'login', meta: { requestAuth: false } },
-    {path: '/registration', component: RegistrationPage, name: 'logup', meta: { requestAuth: false } },
-
-    {path: '/profile', component: ProfilePage, meta: {requestAuth: true}},
-
-    {path: '/lecture', component: LecturePage, name: 'lecture', meta: {requestAuth: false} },
-    {path: '/lecture/:catName', component: LectureListPage, name: 'category', meta: {requestAuth: false} },
-    {path: '/lecture/:catName/:slug', component: ArticlePage, name: 'article', meta: {requestAuth: false} },
-
-    
-    {path: '/panel/article/create', component: CreateArticlePage, name: 'panel-create', meta: {requestAuth: false} },
-    {path: '/panel/article/uid/update', component: UpdateArticlePage, name: 'panel-update', meta: {requestAuth: false} }
-]
+    { path: '/', component: MainPage, name: 'home' },
+    { path: '/lecture', component: LecturePage, name: 'lecture' },
+    {
+        path: '/lecture/:catName',
+        component: LectureListPage,
+        name: 'category',
+        props: true
+    },
+    {
+        path: '/lecture/:catName/:slug',
+        component: ArticlePage,
+        name: 'article',
+        props: true
+    },
+    { path: '/:pathMatch(.*)*', redirect: '/' }
+];
 
 const router = createRouter({
     history: createWebHistory(),
     routes,
-    scrollBehavior(){
-        document.getElementById('app').scrollIntoView({ behavior: 'auto' });
+    scrollBehavior() {
+        return { top: 0 };
     }
 });
-
-router.beforeEach((to, from, next) => {
-    const requestAuth = to.matched.some(record => record.meta.requestAuth);
-    const auth = store.getters.isAuth;
-    if (requestAuth && !auth) {
-        return next('/login')
-    } else if ((to.path == '/login' || to.path == '/registration') && auth) {
-        return next('/')
-    }
-    next()
-})
 
 export default router;
