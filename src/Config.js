@@ -1,6 +1,8 @@
+const trimTrailingSlash = (value) => String(value || '').replace(/\/+$/, '');
+
 const config = {
-    server: process.env.VUE_APP_SERVER,
-    API_SECTER_WORD: process.env.VUE_APP_API_SECRET_KEY
+    server: trimTrailingSlash(process.env.VUE_APP_SERVER),
+    siteKey: process.env.VUE_APP_SITE_KEY || 'logos'
 };
 
 export default config;
