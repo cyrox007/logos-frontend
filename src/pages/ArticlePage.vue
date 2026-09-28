@@ -35,6 +35,7 @@
 
 <script>
 import PublicContentService from '@/API/PublicContentService';
+import { applyArticleSeo } from '@/seo';
 
 export default {
     name: 'ArticlePage',
@@ -64,12 +65,7 @@ export default {
                     this.$route.params.slug
                 );
                 this.article = response.data.item;
-                const seo = this.article.extra_data || {};
-                document.title = seo.seo_title || `${this.article.title} | Logos`;
-                const description = document.querySelector('meta[name="description"]');
-                if (description) {
-                    description.content = seo.seo_description || this.article.excerpt || '';
-                }
+                applyArticleSeo(this.article);
             } catch (error) {
                 console.error(error);
                 this.article = null;
