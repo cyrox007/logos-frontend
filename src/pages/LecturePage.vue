@@ -1,86 +1,84 @@
 <template>
-    <section class="categories">
-        <div class="container categories__wrapper">
-            <h1>База знаний</h1>
-            <div class="categories__list" v-if="categories.length > 0">
-                <category-articles :categories="categories"/>
+    <main class="catalog-page">
+        <div class="container">
+            <header class="catalog-page__header">
+                <span class="eyebrow">Темы</span>
+                <h1>База знаний</h1>
+                <p>Материалы сгруппированы по рубрикам, которыми управляет общая админка jsint-site.</p>
+            </header>
+
+            <div v-if="isLoading" class="state-card">Загружаем рубрики…</div>
+            <div v-else-if="error" class="state-card state-card--error">{{ error }}</div>
+            <div v-else-if="categories.length" class="catalog-page__grid">
+                <CategoryArticles :categories="categories" />
             </div>
-            <div class="categories__none" v-else>
-                <p>К сожалению администратор еще не добавил ни одной категории и\или статьи. Пожалуйста, ожидайте обновлений</p>
-            </div>
+            <div v-else class="state-card">Пока нет опубликованных рубрик.</div>
         </div>
-    </section>
+    </main>
 </template>
 
 <script>
-    import CategoryArticles from '@/components/Articles/CategoryArticles.vue';
-    import CategoriesService from '@/API/CategoriesService.js';
-    export default {
-        name: "LecturePage",
-        components: {
-            CategoryArticles
-        },
-        methods: {
-            async getData() {
-                try {
-                    this.isLoading = true;
-                    const response = await CategoriesService.getCategories();
-                    console.log(response);
-                } catch (error) {
-                    console.error(error);
-                } finally {
-                    this.isLoading = false;
-                }
-            }
-        },
-        beforeMount() {
-            document.title = "База знаний | Logos";
-            /* this.getData(); */
-        },
-        data () {
-            
-            return {
-                isLoading: false,
-                categories: [
-                    {
-                        uid: 'uid1',
-                        name: 'Философия',
-                        image: 'https://img.icons8.com/ios/100/book--v1.png',
-                        slug: 'philosofia'
-                    },
-                    
-                ]
-            }
+import CategoryArticles from '@/components/Articles/CategoryArticles.vue';
+import PublicContentService from '@/API/PublicContentService';
+
+export default {
+    name: 'LecturePage',
+    components: {
+        CategoryArticles
+    },
+    data() {
+        return {
+            isLoading: true,
+            error: '',
+            categories: []
+        };
+    },
+    async created() {
+        document.title = 'База знаний | Logos';
+        try {
+            const response = await PublicContentService.getCategories();
+            this.categories = response.data.items || [];
+        } catch (error) {
+            console.error(error);
+            this.error = 'Не удалось загрузить рубрики.';
+        } finally {
+            this.isLoading = false;
         }
     }
+};
 </script>
 
 <style>
-
-.categories {
-    display: flex;
-    flex-direction: row;
-    padding: 40px 0;
+.catalog-page {
+    padding: 56px 0 80px;
 }
-.categories__wrapper {
-    display: flex;
-    flex-direction: column;
+.catalog-page__header {
+    max-width: 760px;
+    margin-bottom: 30px;
+    text-align: left;
 }
-.categories__wrapper h1 {
-    margin-bottom: 40px;
+.catalog-page__header h1 {
+    margin: 8px 0 14px;
+    font-size: clamp(36px, 6vw, 58px);
 }
-.categories__list {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-}
-.categories__none {
-    padding: 20px;
-    border: 1px solid var(--color-blue);
-    border-radius: 5px;
-    background-color: var(--color-white);
+.catalog-page__header p {
+    color: var(--color-text-muted);
     font-size: 18px;
+    line-height: 1.6;
+}
+.catalog-page__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+@media (max-width: 900px) {
+    .catalog-page__grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+@media (max-width: 620px) {
+    .catalog-page__grid {
+        grid-template-columns: 1fr;
+    }
 }
 </style>
