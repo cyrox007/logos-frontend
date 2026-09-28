@@ -25,6 +25,9 @@ jobs:
       - name: Установить зависимости
         run: npm ci
 
+      - name: Проверить границы публичного клиента
+        run: npm run verify
+
       - name: Собрать production frontend
         env:
           VUE_APP_SERVER: https://example.invalid

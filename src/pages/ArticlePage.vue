@@ -17,17 +17,39 @@
                     >
                         ← К рубрике
                     </router-link>
+
                     <span class="eyebrow">
                         {{ article.category ? article.category.title : 'Материал' }}
                     </span>
                     <h1>{{ article.title }}</h1>
-                    <p v-if="article.excerpt" class="article-sheet__lead">{{ article.excerpt }}</p>
+
+                    <p v-if="articleLead" class="article-sheet__lead">{{ articleLead }}</p>
+
+                    <div v-if="profile.speaker || keywords.length" class="article-sheet__facts">
+                        <span v-if="profile.speaker">
+                            <strong>Автор:</strong> {{ profile.speaker }}
+                        </span>
+                        <span
+                            v-for="keyword in keywords"
+                            :key="keyword"
+                            class="article-sheet__keyword"
+                        >{{ keyword }}</span>
+                    </div>
+
                     <time v-if="article.published_at" :datetime="article.published_at">
                         {{ formatDate(article.published_at) }}
                     </time>
                 </header>
 
                 <div class="article-sheet__content" v-html="article.content"></div>
+
+                <section v-if="bibliography.length" class="article-sheet__bibliography">
+                    <span class="eyebrow">Источники</span>
+                    <h2>Литература и источники</h2>
+                    <ol>
+                        <li v-for="item in bibliography" :key="item">{{ item }}</li>
+                    </ol>
+                </section>
             </article>
         </div>
     </main>
@@ -45,6 +67,34 @@ export default {
             error: '',
             article: null
         };
+    },
+    computed: {
+        profile() {
+            const envelope = this.article?.data;
+            if (
+                !envelope ||
+                envelope.version !== 1 ||
+                !['logos.article', 'logos.lecture'].includes(envelope.schema) ||
+                typeof envelope.data !== 'object' ||
+                envelope.data === null
+            ) {
+                return {};
+            }
+            return envelope.data;
+        },
+        articleLead() {
+            return this.profile.abstract || this.article?.excerpt || '';
+        },
+        keywords() {
+            return Array.isArray(this.profile.keywords)
+                ? this.profile.keywords
+                : [];
+        },
+        bibliography() {
+            return Array.isArray(this.profile.bibliography)
+                ? this.profile.bibliography
+                : [];
+        }
     },
     watch: {
         '$route.params.slug': {
@@ -119,6 +169,22 @@ export default {
     font-size: 18px;
     line-height: 1.65;
 }
+.article-sheet__facts {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+    color: var(--color-text-muted);
+    font-size: 14px;
+}
+.article-sheet__keyword {
+    padding: 4px 9px;
+    border-radius: 999px;
+    background: var(--color-surface-muted);
+    color: var(--color-accent);
+    font-size: 13px;
+    font-weight: 700;
+}
 .article-sheet__header time {
     margin-top: 18px;
     display: block;
@@ -139,5 +205,31 @@ export default {
 }
 .article-sheet__content a {
     color: var(--color-accent);
+}
+.article-sheet__content img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 1.6em auto;
+    border-radius: 14px;
+}
+.article-sheet__bibliography {
+    padding: 0 clamp(28px, 5vw, 56px) clamp(28px, 5vw, 56px);
+    border-top: 1px solid var(--color-border);
+}
+.article-sheet__bibliography .eyebrow {
+    display: block;
+    margin-top: 28px;
+}
+.article-sheet__bibliography h2 {
+    margin: 8px 0 18px;
+    font-size: 26px;
+}
+.article-sheet__bibliography ol {
+    display: grid;
+    gap: 10px;
+    padding-left: 22px;
+    color: var(--color-text-muted);
+    line-height: 1.6;
 }
 </style>
