@@ -20,6 +20,7 @@
 <script>
 import ArticleElement from '@/components/Articles/ArticleElement.vue';
 import PublicContentService from '@/API/PublicContentService';
+import { applyCategorySeo } from '@/seo';
 
 export default {
     name: 'LectureListPage',
@@ -61,7 +62,7 @@ export default {
                 const category = categories.find((item) => item.slug === slug);
                 this.categoryTitle = category?.title || slug;
                 this.articles = publicationsResponse.data.items || [];
-                document.title = `${this.categoryTitle} | База знаний | Logos`;
+                applyCategorySeo(category || { title: this.categoryTitle });
             } catch (error) {
                 console.error(error);
                 this.error = 'Не удалось загрузить публикации.';
