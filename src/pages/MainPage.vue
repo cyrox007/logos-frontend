@@ -35,6 +35,7 @@
 <script>
 import LastArticles from '@/components/Articles/LastArticles.vue';
 import PublicContentService from '@/API/PublicContentService';
+import { applyHomeSeo } from '@/seo';
 
 export default {
     name: 'MainPage',
@@ -45,30 +46,22 @@ export default {
         return {
             isLoading: true,
             error: '',
-            site: null,
             posts: []
         };
     },
     computed: {
         brandName() {
-            return this.site?.settings?.brand?.name || this.site?.name || 'λόγος';
+            return 'λόγος';
         },
         description() {
-            return this.site?.settings?.seo?.description || 'Публикации и материалы.';
+            return 'Самостоятельная публичная витрина материалов Logos.';
         }
     },
     async created() {
-        document.title = 'Logos';
+        applyHomeSeo();
         try {
             const response = await PublicContentService.getBootstrap(9);
-            this.site = response.data.site;
             this.posts = response.data.latest_publications || [];
-            const seo = this.site?.settings?.seo || {};
-            document.title = seo.title || `${this.site?.name || 'Logos'} | Главная`;
-            const description = document.querySelector('meta[name="description"]');
-            if (description && seo.description) {
-                description.content = seo.description;
-            }
         } catch (error) {
             console.error(error);
             this.error = 'Не удалось загрузить материалы. Попробуйте обновить страницу.';
