@@ -20,6 +20,7 @@
 <script>
 import CategoryArticles from '@/components/Articles/CategoryArticles.vue';
 import PublicContentService from '@/API/PublicContentService';
+import { applyCatalogSeo } from '@/seo';
 
 export default {
     name: 'LecturePage',
@@ -34,7 +35,7 @@ export default {
         };
     },
     async created() {
-        document.title = 'База знаний | Logos';
+        applyCatalogSeo();
         try {
             const response = await PublicContentService.getCategories();
             this.categories = response.data.items || [];
