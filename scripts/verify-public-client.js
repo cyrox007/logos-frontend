@@ -31,6 +31,18 @@ const checks = [
         ].every(absent)
     ],
     [
+        'зависимости старой CMS удалены',
+        () => {
+            const pkg = JSON.parse(read('package.json'));
+            const dependencies = pkg.dependencies || {};
+            return [
+                '@editorjs/editorjs',
+                'crypto-js',
+                'vuex'
+            ].every(name => !(name in dependencies));
+        }
+    ],
+    [
         'клиент проверяет версию публичного API',
         () => {
             const api = read('src/API/PublicContentService.js');
