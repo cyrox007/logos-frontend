@@ -48,6 +48,21 @@ export function applyHomeSeo() {
     setProperty('og:url', canonicalUrl('/'));
 }
 
+export function applyCatalogSeo() {
+    const title = 'База знаний | Logos';
+    const description = 'Тематические рубрики и публикации Logos.';
+    const url = canonicalUrl('/lecture');
+
+    document.title = title;
+    setMeta('description', description);
+    setCanonical(url);
+    setProperty('og:type', 'website');
+    setProperty('og:site_name', BRAND);
+    setProperty('og:title', title);
+    setProperty('og:description', description);
+    setProperty('og:url', url);
+}
+
 export function applyCategorySeo(category) {
     const name = category?.title || 'База знаний';
     const description = category?.description || `Материалы рубрики «${name}» на Logos.`;
