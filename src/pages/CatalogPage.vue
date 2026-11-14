@@ -53,7 +53,9 @@
                     v-else-if="query"
                     key="search-empty"
                     title="Рубрики не найдены"
-                    :message="'По запросу «' + query + '» ничего не найдено. Попробуйте другое слово.'"
+                    :message="
+                        'По запросу «' + query + '» ничего не найдено. Попробуйте другое слово.'
+                    "
                     action-label="Сбросить поиск"
                     @action="query = ''"
                 />
@@ -108,7 +110,8 @@ export default {
                 this.categories = response.data.items || [];
             } catch (error) {
                 console.error(error);
-                this.error = 'Не удалось загрузить рубрики. Проверьте соединение и повторите попытку.';
+                this.error =
+                    'Не удалось загрузить рубрики. Проверьте соединение и повторите попытку.';
             } finally {
                 this.isLoading = false;
             }
