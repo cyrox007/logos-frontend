@@ -139,6 +139,31 @@
     }
 }
 
+.catalog-page__grid,
+.home-categories__grid,
+.publication-list__items,
+.latest-grid {
+    position: relative;
+}
+.search-field__clear {
+    display: grid;
+    place-items: center;
+    flex: 0 0 28px;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--color-surface-muted);
+    color: var(--color-accent-dark);
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+.search-field__clear:hover {
+    background: var(--color-accent-soft);
+}
 .page-fade-enter-active,
 .page-fade-leave-active,
 .content-switch-enter-active,
