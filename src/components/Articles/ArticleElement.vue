@@ -1,26 +1,17 @@
 <template>
-    <article v-for="article in articles" :key="article.id" class="article-card">
+    <article v-for="(article, index) in articles" :key="article.id || article.slug" class="article-card">
         <router-link
             class="article-card__link"
-            :to="{
-                name: 'article',
-                params: {
-                    catName: article.category ? article.category.slug : 'materials',
-                    slug: article.slug
-                }
-            }"
+            :to="{ name: 'article', params: { catName: article.category?.slug || 'materials', slug: article.slug } }"
         >
+            <span class="article-card__number">{{ String(index + 1).padStart(2, '0') }}</span>
             <div class="article-card__body">
-                <span class="article-card__category">
-                    {{ article.category ? article.category.title : 'Материал' }}
-                </span>
-                <h2>{{ article.title }}</h2>
-                <p>{{ article.excerpt }}</p>
-                <time v-if="article.published_at" :datetime="article.published_at">
-                    {{ formatDate(article.published_at) }}
-                </time>
+                <span class="article-card__category">{{ article.category?.title || 'Материал' }}</span>
+                <h3>{{ article.title }}</h3>
+                <p v-if="article.excerpt">{{ article.excerpt }}</p>
+                <time v-if="article.published_at" :datetime="article.published_at">{{ formatDate(article.published_at) }}</time>
             </div>
-            <span class="article-card__more">Читать →</span>
+            <span class="article-card__more">Читать <span aria-hidden="true">↗</span></span>
         </router-link>
     </article>
 </template>
@@ -28,75 +19,25 @@
 <script>
 export default {
     name: 'ArticleElement',
-    props: {
-        articles: {
-            type: Array,
-            default: () => []
-        }
-    },
+    props: { articles: { type: Array, default: () => [] } },
     methods: {
         formatDate(value) {
-            return new Intl.DateTimeFormat('ru-RU', {
-                day: '2-digit',
-                month: 'long',
-                year: 'numeric'
-            }).format(new Date(value));
+            const date = new Date(value);
+            return Number.isNaN(date.getTime()) ? '' : new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
         }
     }
 };
 </script>
 
 <style>
-.article-card {
-    border: 1px solid var(--color-border);
-    border-radius: 18px;
-    background: var(--color-surface);
-    box-shadow: var(--shadow-soft);
-}
-.article-card__link {
-    padding: 22px;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 18px;
-    color: inherit;
-    text-align: left;
-    text-decoration: none;
-}
-.article-card__body {
-    min-width: 0;
-}
-.article-card__category {
-    color: var(--color-accent);
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: .07em;
-    text-transform: uppercase;
-}
-.article-card h2 {
-    margin: 8px 0 10px;
-    font-size: 24px;
-}
-.article-card p {
-    color: var(--color-text-muted);
-    line-height: 1.55;
-}
-.article-card time {
-    margin-top: 14px;
-    display: block;
-    color: var(--color-text-muted);
-    font-size: 13px;
-}
-.article-card__more {
-    align-self: center;
-    color: var(--color-accent);
-    font-weight: 700;
-}
-@media (max-width: 620px) {
-    .article-card__link {
-        grid-template-columns: 1fr;
-    }
-    .article-card__more {
-        justify-self: start;
-    }
-}
+.article-card { border: 1px solid var(--color-border); border-radius: 11px; background: #fff; transition: border-color .2s ease, transform .2s ease; }
+.article-card:hover { border-color: #a9ceaf; transform: translateX(3px); }
+.article-card__link { display: grid; grid-template-columns: 54px minmax(0,1fr) auto; align-items: start; gap: 25px; padding: 27px 30px; color: inherit; text-decoration: none; }
+.article-card__number { color: var(--color-gold); font: 22px var(--font-display); }
+.article-card__category { color: var(--color-accent-dark); font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.article-card h3 { margin: 8px 0; font: 500 clamp(25px, 3vw, 34px)/1.18 var(--font-display); }
+.article-card p { max-width: 740px; color: var(--color-text-muted); font-size: 14px; }
+.article-card time { display: block; margin-top: 15px; color: var(--color-text-muted); font-size: 12px; }
+.article-card__more { align-self: center; color: var(--color-accent-dark); font-size: 13px; font-weight: 700; white-space: nowrap; }
+@media (max-width: 650px) { .article-card__link { grid-template-columns: 32px minmax(0,1fr); gap: 15px; padding: 21px 17px; } .article-card__more { grid-column: 2; justify-self: start; } .article-card__number { font-size: 18px; } }
 </style>
