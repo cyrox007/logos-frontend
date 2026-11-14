@@ -31,9 +31,7 @@
             "eslint:recommended"
         ],
         "parserOptions": {
-            "parser": "@babel/eslint-parser",
-            "requireConfigFile": false,
-            "ecmaVersion": "latest",
+            "ecmaVersion": 2022,
             "sourceType": "module"
         },
         "rules": {
@@ -50,7 +48,6 @@
         "not ie 11"
     ],
     "devDependencies": {
-        "@babel/eslint-parser": "7.28.0",
         "eslint": "8.57.1",
         "eslint-plugin-vue": "9.33.0",
         "prettier": "2.8.8"

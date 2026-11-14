@@ -22,7 +22,7 @@ jobs:
           cache: npm
 
       - name: Зафиксировать зависимости инструментов проверки
-        run: npm install --save-dev --save-exact eslint@8.57.1 eslint-plugin-vue@9.33.0 @babel/eslint-parser@7.28.0 prettier@2.8.8
+        run: npm install --save-dev --save-exact eslint@8.57.1 eslint-plugin-vue@9.33.0 prettier@2.8.8
 
       - name: Привести файлы к общему стилю
         run: |
