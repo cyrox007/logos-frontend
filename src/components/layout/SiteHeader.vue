@@ -51,7 +51,9 @@
                     <router-link :to="{ name: 'catalog' }" @click="menuOpen = false"
                         >Каталог знаний</router-link
                     >
-                    <router-link :to="{ name: 'home', hash: '#principles' }" @click="menuOpen = false"
+                    <router-link
+                        :to="{ name: 'home', hash: '#principles' }"
+                        @click="menuOpen = false"
                         >О проекте</router-link
                     >
                 </div>
