@@ -1,18 +1,41 @@
 <template>
     <main class="publication-list">
         <div class="container">
+            <nav class="breadcrumbs" aria-label="Навигационная цепочка">
+                <router-link :to="{ name: 'home' }">Главная</router-link>
+                <span class="breadcrumbs__separator" aria-hidden="true">/</span>
+                <router-link :to="{ name: 'lecture' }">Каталог знаний</router-link>
+                <span class="breadcrumbs__separator" aria-hidden="true">/</span>
+                <span aria-current="page">{{ categoryTitle }}</span>
+            </nav>
+
             <header class="publication-list__header">
-                <router-link class="back-link" :to="{ name: 'lecture' }">← Все рубрики</router-link>
-                <span class="eyebrow">Рубрика</span>
+                <span class="eyebrow">Рубрика библиотеки</span>
                 <h1>{{ categoryTitle }}</h1>
+                <p v-if="categoryDescription">{{ categoryDescription }}</p>
+                <p v-else>Статьи, исследования и другие материалы по выбранной теме.</p>
             </header>
 
-            <div v-if="isLoading" class="state-card">Загружаем публикации…</div>
-            <div v-else-if="error" class="state-card state-card--error">{{ error }}</div>
-            <div v-else-if="articles.length" class="publication-list__items">
-                <ArticleElement :articles="articles" />
+            <div class="publication-list__toolbar">
+                <div>
+                    <h2>Материалы рубрики</h2>
+                    <p v-if="!isLoading && !error">{{ articles.length }} {{ materialWord(articles.length) }}</p>
+                </div>
+                <label class="search-field">
+                    <span aria-hidden="true">⌕</span>
+                    <input v-model.trim="query" type="search" placeholder="Поиск по материалам..." aria-label="Поиск по материалам рубрики">
+                </label>
             </div>
+
+            <div v-if="isLoading" class="state-card" role="status">Загружаем публикации…</div>
+            <div v-else-if="error" class="state-card state-card--error" role="alert">{{ error }}</div>
+            <div v-else-if="filteredArticles.length" class="publication-list__items">
+                <ArticleElement :articles="filteredArticles" />
+            </div>
+            <div v-else-if="query" class="state-card">По запросу «{{ query }}» материалы не найдены.</div>
             <div v-else class="state-card">В этой рубрике пока нет опубликованных материалов.</div>
+
+            <router-link class="publication-list__back text-link" :to="{ name: 'lecture' }">← Вернуться к каталогу</router-link>
         </div>
     </main>
 </template>
@@ -24,76 +47,72 @@ import { applyCategorySeo } from '@/seo';
 
 export default {
     name: 'LectureListPage',
-    components: {
-        ArticleElement
-    },
+    components: { ArticleElement },
     data() {
-        return {
-            isLoading: true,
-            error: '',
-            categoryTitle: this.$route.params.catName,
-            articles: []
-        };
+        return { isLoading: true, error: '', categoryTitle: '', categoryDescription: '', articles: [], query: '' };
     },
-    watch: {
-        '$route.params.catName': {
-            async handler() {
-                await this.loadData();
-            }
+    computed: {
+        filteredArticles() {
+            const term = this.query.toLocaleLowerCase('ru-RU');
+            if (!term) return this.articles;
+            return this.articles.filter(item =>
+                [item.title, item.excerpt].some(value =>
+                    String(value || '').toLocaleLowerCase('ru-RU').includes(term)
+                )
+            );
         }
     },
-    async created() {
-        await this.loadData();
+    watch: {
+        '$route.params.catName'() { this.loadData(); }
     },
+    created() { this.loadData(); },
     methods: {
         async loadData() {
+            const slug = this.$route.params.catName;
             this.isLoading = true;
             this.error = '';
-            const slug = this.$route.params.catName;
+            this.query = '';
+            this.categoryTitle = slug;
+            this.categoryDescription = '';
+            this.articles = [];
             try {
                 const [categoriesResponse, publicationsResponse] = await Promise.all([
                     PublicContentService.getCategories(),
-                    PublicContentService.getPublications({
-                        category: slug,
-                        limit: 100
-                    })
+                    PublicContentService.getPublications({ category: slug, limit: 100 })
                 ]);
-                const categories = categoriesResponse.data.items || [];
-                const category = categories.find((item) => item.slug === slug);
+                // Защита от устаревшего ответа при быстром переключении рубрик.
+                if (slug !== this.$route.params.catName) return;
+                const category = (categoriesResponse.data.items || []).find(item => item.slug === slug);
                 this.categoryTitle = category?.title || slug;
+                this.categoryDescription = category?.description || '';
                 this.articles = publicationsResponse.data.items || [];
                 applyCategorySeo(category || { title: this.categoryTitle });
             } catch (error) {
+                if (slug !== this.$route.params.catName) return;
                 console.error(error);
-                this.error = 'Не удалось загрузить публикации.';
+                this.error = 'Не удалось загрузить материалы рубрики.';
             } finally {
-                this.isLoading = false;
+                if (slug === this.$route.params.catName) this.isLoading = false;
             }
+        },
+        materialWord(count) {
+            if (count % 10 === 1 && count % 100 !== 11) return 'материал';
+            if (count % 10 >= 2 && count % 10 <= 4 && (count % 100 < 12 || count % 100 > 14)) return 'материала';
+            return 'материалов';
         }
     }
 };
 </script>
 
 <style>
-.publication-list {
-    padding: 56px 0 80px;
-}
-.publication-list__header {
-    margin-bottom: 28px;
-    text-align: left;
-}
-.publication-list__header h1 {
-    margin-top: 8px;
-    font-size: clamp(34px, 6vw, 54px);
-}
-.publication-list__items {
-    display: grid;
-    gap: 14px;
-}
-.back-link {
-    margin-bottom: 24px;
-    display: block;
-    color: var(--color-text-muted);
-    text-decoration: none;
-}
+.publication-list { padding: 46px 0 95px; }
+.publication-list__header { padding: 45px 0 60px; border-bottom: 1px solid var(--color-border); }
+.publication-list__header h1 { margin: 18px 0; max-width: 880px; font-size: clamp(48px, 6vw, 80px); line-height: 1.06; letter-spacing: -.045em; }
+.publication-list__header p { max-width: 750px; color: var(--color-text-muted); font-size: 17px; }
+.publication-list__toolbar { display: flex; align-items: center; justify-content: space-between; gap: 25px; padding: 40px 0 24px; }
+.publication-list__toolbar h2 { font-size: 32px; }
+.publication-list__toolbar p { color: var(--color-text-muted); font-size: 13px; }
+.publication-list__items { display: grid; gap: 13px; }
+.publication-list__back { margin-top: 35px; }
+@media (max-width: 620px) { .publication-list { padding: 30px 0 70px; } .publication-list__header { padding: 22px 0 36px; } .publication-list__header h1 { font-size: 48px; } .publication-list__toolbar { align-items: stretch; flex-direction: column; padding-top: 28px; } }
 </style>
