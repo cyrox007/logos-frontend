@@ -35,15 +35,27 @@ export default {
             categoriesError: '',
             postsError: '',
             categories: [],
-            posts: []
+            posts: [],
+            pendingRequests: 0
         };
     },
-    async created() {
+    created() {
         applyHomeSeo();
-        await Promise.all([this.loadCategories(), this.loadPosts()]);
+        this.loadCategories();
+        this.loadPosts();
     },
+    emits: ['loading-change'],
     methods: {
+        beginRequest() {
+            this.pendingRequests += 1;
+            if (this.pendingRequests === 1) this.$emit('loading-change', true);
+        },
+        endRequest() {
+            this.pendingRequests = Math.max(0, this.pendingRequests - 1);
+            if (this.pendingRequests === 0) this.$emit('loading-change', false);
+        },
         async loadCategories() {
+            this.beginRequest();
             this.categoriesLoading = true;
             this.categoriesError = '';
             try {
@@ -55,9 +67,11 @@ export default {
                     'Не удалось загрузить рубрики. Попробуйте обновить страницу.';
             } finally {
                 this.categoriesLoading = false;
+                this.endRequest();
             }
         },
         async loadPosts() {
+            this.beginRequest();
             this.postsLoading = true;
             this.postsError = '';
             try {
@@ -68,6 +82,7 @@ export default {
                 this.postsError = 'Не удалось загрузить публикации. Попробуйте обновить страницу.';
             } finally {
                 this.postsLoading = false;
+                this.endRequest();
             }
         }
     }
