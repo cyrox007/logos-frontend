@@ -26,6 +26,7 @@ const required = [
     'src/components/article/ArticleSources.vue',
     'src/components/article/ArticleAside.vue',
     'src/domain/publication.mjs',
+    'src/seo/descriptors.mjs',
     'src/styles/tokens.css',
     'src/styles/base.css',
     'src/styles/home.css',
@@ -164,7 +165,7 @@ const checks = [
             const seo = read('src/seo/index.js');
             return (
                 seo.includes('application/ld+json') &&
-                seo.includes('getPublicationProfile') &&
+                read('src/seo/descriptors.mjs').includes('getPublicationProfile') &&
                 !seo.includes('extra_data')
             );
         }
