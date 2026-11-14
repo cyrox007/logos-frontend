@@ -8,7 +8,8 @@
                     :key="item.id"
                     :href="'#' + item.id"
                     :class="{ 'article-aside__subitem': item.level === 3 }"
-                >{{ item.title }}</a>
+                    >{{ item.title }}</a
+                >
             </nav>
         </div>
         <div class="article-aside__panel article-aside__panel--context">

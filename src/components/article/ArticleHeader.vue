@@ -11,7 +11,9 @@
             <span v-if="readingMinutes"><strong>Чтение</strong> ≈ {{ readingMinutes }} мин</span>
         </div>
         <div v-if="keywords.length" class="article-sheet__keywords" aria-label="Ключевые слова">
-            <span v-for="keyword in keywords" :key="keyword" class="article-sheet__keyword">{{ keyword }}</span>
+            <span v-for="keyword in keywords" :key="keyword" class="article-sheet__keyword">{{
+                keyword
+            }}</span>
         </div>
     </header>
 </template>
@@ -28,8 +30,12 @@ export default {
         readingMinutes: { type: Number, default: 0 }
     },
     computed: {
-        articleLead() { return this.profile.abstract || this.article.excerpt || ''; },
-        keywords() { return Array.isArray(this.profile.keywords) ? this.profile.keywords : []; }
+        articleLead() {
+            return this.profile.abstract || this.article.excerpt || '';
+        },
+        keywords() {
+            return Array.isArray(this.profile.keywords) ? this.profile.keywords : [];
+        }
     },
     methods: { formatPublicationDate }
 };

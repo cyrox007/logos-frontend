@@ -6,7 +6,10 @@
                 <div>
                     <span class="eyebrow">Темы и направления</span>
                     <h1>Каталог <em>знаний</em></h1>
-                    <p>Выберите рубрику для знакомства с материалами, исследованиями и источниками. Содержание каталога формируется в общей системе публикаций.</p>
+                    <p>
+                        Выберите рубрику для знакомства с материалами, исследованиями и источниками.
+                        Содержание каталога формируется в общей системе публикаций.
+                    </p>
                 </div>
                 <span class="catalog-page__symbol" aria-hidden="true">λόγος</span>
             </header>
@@ -14,17 +17,27 @@
             <div class="catalog-page__toolbar">
                 <div>
                     <h2>Все рубрики</h2>
-                    <p v-if="!isLoading && !error" class="catalog-page__count">{{ categories.length }} {{ rubricWord(categories.length) }}</p>
+                    <p v-if="!isLoading && !error" class="catalog-page__count">
+                        {{ categories.length }} {{ rubricWord(categories.length) }}
+                    </p>
                 </div>
-                <SearchField v-model="query" placeholder="Найти рубрику..." label="Поиск по рубрикам" />
+                <SearchField
+                    v-model="query"
+                    placeholder="Найти рубрику..."
+                    label="Поиск по рубрикам"
+                />
             </div>
 
             <div v-if="isLoading" class="state-card" role="status">Загружаем рубрики…</div>
-            <div v-else-if="error" class="state-card state-card--error" role="alert">{{ error }}</div>
+            <div v-else-if="error" class="state-card state-card--error" role="alert">
+                {{ error }}
+            </div>
             <div v-else-if="filteredCategories.length" class="catalog-page__grid">
                 <CategoryArticles :categories="filteredCategories" />
             </div>
-            <div v-else-if="query" class="state-card">По запросу «{{ query }}» рубрики не найдены. Попробуйте другое слово.</div>
+            <div v-else-if="query" class="state-card">
+                По запросу «{{ query }}» рубрики не найдены. Попробуйте другое слово.
+            </div>
             <div v-else class="state-card">Пока нет опубликованных рубрик.</div>
         </div>
     </main>
@@ -43,7 +56,10 @@ export default {
     components: { CategoryArticles, PageBreadcrumbs, SearchField },
     data() {
         return {
-            isLoading: true, error: '', categories: [], query: '',
+            isLoading: true,
+            error: '',
+            categories: [],
+            query: '',
             breadcrumbs: [{ label: 'Главная', to: { name: 'home' } }, { label: 'Каталог знаний' }]
         };
     },

@@ -20,9 +20,11 @@ export default {
                     if (!title) return null;
                     let id = heading.id;
                     if (!id) {
-                        const base = title.toLocaleLowerCase('ru-RU')
-                            .replace(/[^a-zа-яё0-9]+/gi, '-')
-                            .replace(/^-|-$/g, '') || 'razdel';
+                        const base =
+                            title
+                                .toLocaleLowerCase('ru-RU')
+                                .replace(/[^a-zа-яё0-9]+/gi, '-')
+                                .replace(/^-|-$/g, '') || 'razdel';
                         id = base;
                         let number = 2;
                         while (used.has(id)) id = base + '-' + number++;

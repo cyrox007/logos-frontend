@@ -13,20 +13,32 @@
             <div class="publication-list__toolbar">
                 <div>
                     <h2>Материалы рубрики</h2>
-                    <p v-if="!isLoading && !error">{{ articles.length }} {{ materialWord(articles.length) }}</p>
+                    <p v-if="!isLoading && !error">
+                        {{ articles.length }} {{ materialWord(articles.length) }}
+                    </p>
                 </div>
-                <SearchField v-model="query" placeholder="Поиск по материалам..." label="Поиск по материалам рубрики" />
+                <SearchField
+                    v-model="query"
+                    placeholder="Поиск по материалам..."
+                    label="Поиск по материалам рубрики"
+                />
             </div>
 
             <div v-if="isLoading" class="state-card" role="status">Загружаем публикации…</div>
-            <div v-else-if="error" class="state-card state-card--error" role="alert">{{ error }}</div>
+            <div v-else-if="error" class="state-card state-card--error" role="alert">
+                {{ error }}
+            </div>
             <div v-else-if="filteredArticles.length" class="publication-list__items">
                 <ArticleElement :articles="filteredArticles" />
             </div>
-            <div v-else-if="query" class="state-card">По запросу «{{ query }}» материалы не найдены.</div>
+            <div v-else-if="query" class="state-card">
+                По запросу «{{ query }}» материалы не найдены.
+            </div>
             <div v-else class="state-card">В этой рубрике пока нет опубликованных материалов.</div>
 
-            <router-link class="publication-list__back text-link" :to="{ name: 'catalog' }">← Вернуться к каталогу</router-link>
+            <router-link class="publication-list__back text-link" :to="{ name: 'catalog' }"
+                >← Вернуться к каталогу</router-link
+            >
         </div>
     </main>
 </template>
@@ -43,7 +55,14 @@ export default {
     name: 'CategoryPage',
     components: { ArticleElement, PageBreadcrumbs, SearchField },
     data() {
-        return { isLoading: true, error: '', categoryTitle: '', categoryDescription: '', articles: [], query: '' };
+        return {
+            isLoading: true,
+            error: '',
+            categoryTitle: '',
+            categoryDescription: '',
+            articles: [],
+            query: ''
+        };
     },
     computed: {
         breadcrumbs() {
@@ -58,9 +77,13 @@ export default {
         }
     },
     watch: {
-        '$route.params.catName'() { this.loadData(); }
+        '$route.params.catName'() {
+            this.loadData();
+        }
     },
-    created() { this.loadData(); },
+    created() {
+        this.loadData();
+    },
     methods: {
         async loadData() {
             const slug = this.$route.params.catName;
@@ -77,7 +100,9 @@ export default {
                 ]);
                 // Защита от устаревшего ответа при быстром переключении рубрик.
                 if (slug !== this.$route.params.catName) return;
-                const category = (categoriesResponse.data.items || []).find(item => item.slug === slug);
+                const category = (categoriesResponse.data.items || []).find(
+                    item => item.slug === slug
+                );
                 this.categoryTitle = category?.title || slug;
                 this.categoryDescription = category?.description || '';
                 this.articles = publicationsResponse.data.items || [];

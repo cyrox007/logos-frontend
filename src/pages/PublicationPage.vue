@@ -4,7 +4,9 @@
             <PageBreadcrumbs :items="breadcrumbs" />
 
             <div v-if="isLoading" class="state-card" role="status">Загружаем материал…</div>
-            <div v-else-if="error" class="state-card state-card--error" role="alert">{{ error }}</div>
+            <div v-else-if="error" class="state-card state-card--error" role="alert">
+                {{ error }}
+            </div>
 
             <div v-else-if="article" class="article-page__layout">
                 <article class="article-sheet">
@@ -17,7 +19,10 @@
                     <ArticleContent ref="articleContent" :html="article.content || ''" />
                     <ArticleSources :items="bibliography" />
                     <div class="article-sheet__return">
-                        <router-link class="text-link" :to="{ name: 'category', params: { catName: categorySlug } }">
+                        <router-link
+                            class="text-link"
+                            :to="{ name: 'category', params: { catName: categorySlug } }"
+                        >
                             ← Вернуться к материалам рубрики
                         </router-link>
                     </div>
@@ -46,24 +51,41 @@ export default {
         return { isLoading: true, error: '', article: null, tocItems: [] };
     },
     computed: {
-        profile() { return getPublicationProfile(this.article); },
-        categorySlug() { return this.article?.category?.slug || this.$route.params.catName; },
-        categoryTitle() { return this.article?.category?.title || 'Материал'; },
-        bibliography() { return Array.isArray(this.profile.bibliography) ? this.profile.bibliography : []; },
-        readingMinutes() { return estimateReadingMinutes(this.article?.content); },
+        profile() {
+            return getPublicationProfile(this.article);
+        },
+        categorySlug() {
+            return this.article?.category?.slug || this.$route.params.catName;
+        },
+        categoryTitle() {
+            return this.article?.category?.title || 'Материал';
+        },
+        bibliography() {
+            return Array.isArray(this.profile.bibliography) ? this.profile.bibliography : [];
+        },
+        readingMinutes() {
+            return estimateReadingMinutes(this.article?.content);
+        },
         breadcrumbs() {
             return [
                 { label: 'Главная', to: { name: 'home' } },
                 { label: 'Каталог знаний', to: { name: 'catalog' } },
-                { label: this.categoryTitle, to: { name: 'category', params: { catName: this.categorySlug } } },
+                {
+                    label: this.categoryTitle,
+                    to: { name: 'category', params: { catName: this.categorySlug } }
+                },
                 { label: this.article?.title || 'Материал' }
             ];
         }
     },
     watch: {
-        '$route.params.slug'() { this.loadArticle(); }
+        '$route.params.slug'() {
+            this.loadArticle();
+        }
     },
-    created() { this.loadArticle(); },
+    created() {
+        this.loadArticle();
+    },
     methods: {
         async loadArticle() {
             const slug = this.$route.params.slug;
@@ -79,9 +101,10 @@ export default {
             } catch (error) {
                 if (slug !== this.$route.params.slug) return;
                 console.error(error);
-                this.error = error?.response?.status === 404
-                    ? 'Материал не найден.'
-                    : 'Не удалось загрузить материал.';
+                this.error =
+                    error?.response?.status === 404
+                        ? 'Материал не найден.'
+                        : 'Не удалось загрузить материал.';
             } finally {
                 if (slug === this.$route.params.slug) {
                     this.isLoading = false;

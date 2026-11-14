@@ -49,7 +49,8 @@ function setStructuredData(key, payload) {
 
 export function applyHomeSeo() {
     const title = 'Logos — библиотека знаний и исследований';
-    const description = 'Logos — библиотека знаний, тематических материалов, источников и самостоятельных исследований.';
+    const description =
+        'Logos — библиотека знаний, тематических материалов, источников и самостоятельных исследований.';
 
     document.title = title;
     setMeta('description', description);
@@ -116,7 +117,8 @@ export function applyCategorySeo(category) {
 export function applyArticleSeo(article) {
     const title = `${article.title} | Logos`;
     const profile = getPublicationProfile(article);
-    const description = profile.abstract || article.excerpt || `Материал «${article.title}» на Logos.`;
+    const description =
+        profile.abstract || article.excerpt || `Материал «${article.title}» на Logos.`;
     const url = canonicalUrl();
 
     document.title = title;
@@ -137,9 +139,7 @@ export function applyArticleSeo(article) {
         datePublished: article.published_at || undefined,
         dateModified: article.updated_at || undefined,
         keywords: Array.isArray(profile.keywords) ? profile.keywords.join(', ') : undefined,
-        author: profile.speaker
-            ? {'@type': 'Person', name: profile.speaker}
-            : undefined,
+        author: profile.speaker ? { '@type': 'Person', name: profile.speaker } : undefined,
         isPartOf: {
             '@type': 'WebSite',
             name: BRAND,

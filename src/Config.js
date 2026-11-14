@@ -1,4 +1,4 @@
-const trimTrailingSlash = (value) => String(value || '').replace(/\/+$/, '');
+const trimTrailingSlash = value => String(value || '').replace(/\/+$/, '');
 
 const config = {
     server: trimTrailingSlash(process.env.VUE_APP_SERVER),
