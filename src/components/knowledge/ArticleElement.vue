@@ -1,31 +1,31 @@
 <template>
     <TransitionGroup name="card-list" tag="div" class="publication-list__items" appear>
         <article
-        v-for="(article, index) in articles"
-        :key="article.id || article.slug"
-        :style="{ '--item-index': Math.min(index, 6) }"
-        class="article-card"
-    >
-        <router-link
-            class="article-card__link"
-            :to="{
-                name: 'publication',
-                params: { catName: article.category?.slug || 'materials', slug: article.slug }
-            }"
+            v-for="(article, index) in articles"
+            :key="article.id || article.slug"
+            :style="{ '--item-index': Math.min(index, 6) }"
+            class="article-card"
         >
-            <span class="article-card__number">{{ String(index + 1).padStart(2, '0') }}</span>
-            <div class="article-card__body">
-                <span class="article-card__category">{{
-                    article.category?.title || 'Материал'
-                }}</span>
-                <h3>{{ article.title }}</h3>
-                <p v-if="article.excerpt">{{ article.excerpt }}</p>
-                <time v-if="article.published_at" :datetime="article.published_at">{{
-                    formatDate(article.published_at)
-                }}</time>
-            </div>
-            <span class="article-card__more">Читать <span aria-hidden="true">↗</span></span>
-        </router-link>
+            <router-link
+                class="article-card__link"
+                :to="{
+                    name: 'publication',
+                    params: { catName: article.category?.slug || 'materials', slug: article.slug }
+                }"
+            >
+                <span class="article-card__number">{{ String(index + 1).padStart(2, '0') }}</span>
+                <div class="article-card__body">
+                    <span class="article-card__category">{{
+                        article.category?.title || 'Материал'
+                    }}</span>
+                    <h3>{{ article.title }}</h3>
+                    <p v-if="article.excerpt">{{ article.excerpt }}</p>
+                    <time v-if="article.published_at" :datetime="article.published_at">{{
+                        formatDate(article.published_at)
+                    }}</time>
+                </div>
+                <span class="article-card__more">Читать <span aria-hidden="true">↗</span></span>
+            </router-link>
         </article>
     </TransitionGroup>
 </template>
