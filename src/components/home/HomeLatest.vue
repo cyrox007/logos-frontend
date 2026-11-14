@@ -7,7 +7,7 @@
                         <h2 id="home-latest-title" class="section-title">Последние публикации</h2>
                         <p class="section-heading__description">Статьи, размышления и исследования, добавленные в библиотеку.</p>
                     </div>
-                    <router-link class="text-link" :to="{ name: 'lecture' }">Перейти в каталог <span aria-hidden="true">↗</span></router-link>
+                    <router-link class="text-link" :to="{ name: 'catalog' }">Перейти в каталог <span aria-hidden="true">↗</span></router-link>
                 </div>
                 <div v-if="postsLoading" class="state-card" role="status">Загружаем публикации…</div>
                 <div v-else-if="postsError" class="state-card state-card--error" role="alert">{{ postsError }}</div>

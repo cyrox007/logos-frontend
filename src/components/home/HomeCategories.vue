@@ -7,7 +7,7 @@
                         <h2 id="home-categories-title" class="section-title">Откройте свою тему</h2>
                         <p class="section-heading__description">Материалы собраны по рубрикам: от первого знакомства с темой до подробного изучения источников.</p>
                     </div>
-                    <router-link class="text-link" :to="{ name: 'lecture' }">Все рубрики <span aria-hidden="true">↗</span></router-link>
+                    <router-link class="text-link" :to="{ name: 'catalog' }">Все рубрики <span aria-hidden="true">↗</span></router-link>
                 </div>
                 <div v-if="categoriesLoading" class="state-card" role="status">Загружаем рубрики…</div>
                 <div v-else-if="categoriesError" class="state-card state-card--error" role="alert">{{ categoriesError }}</div>

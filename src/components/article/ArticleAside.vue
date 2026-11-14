@@ -14,7 +14,7 @@
         <div class="article-aside__panel article-aside__panel--context">
             <span class="article-aside__eyebrow">Библиотека Logos</span>
             <p>Изучайте смежные темы и материалы, сгруппированные по рубрикам.</p>
-            <router-link class="text-link" :to="{ name: 'lecture' }">
+            <router-link class="text-link" :to="{ name: 'catalog' }">
                 Каталог знаний <span aria-hidden="true">↗</span>
             </router-link>
         </div>

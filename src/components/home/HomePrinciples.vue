@@ -5,7 +5,7 @@
                     <span class="eyebrow">Подход к знанию</span>
                     <h2 id="principles-title" class="section-title">Важен не только ответ, но и путь к нему.</h2>
                     <p>Logos объединяет справочные знания и авторский исследовательский взгляд. Материал может стать отправной точкой для дальнейшего изучения — благодаря контексту, ссылкам и источникам.</p>
-                    <router-link class="text-link" :to="{ name: 'lecture' }">Исследовать материалы <span aria-hidden="true">↗</span></router-link>
+                    <router-link class="text-link" :to="{ name: 'catalog' }">Исследовать материалы <span aria-hidden="true">↗</span></router-link>
                 </div>
                 <div class="home-principles__list">
                     <div v-for="principle in principles" :key="principle.number" class="home-principles__item">

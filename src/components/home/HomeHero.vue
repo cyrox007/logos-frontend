@@ -6,7 +6,7 @@
                     <h1>Знание начинается <em>с вопроса.</em></h1>
                     <p>Logos — пространство для изучения истории, культуры, философии и других областей знания. Здесь встречаются справочные материалы, источники и самостоятельные исследования.</p>
                     <div class="home-hero__actions">
-                        <router-link class="button button--primary" :to="{ name: 'lecture' }">Открыть каталог <span aria-hidden="true">↗</span></router-link>
+                        <router-link class="button button--primary" :to="{ name: 'catalog' }">Открыть каталог <span aria-hidden="true">↗</span></router-link>
                         <a class="button button--outline" href="#principles">О проекте</a>
                     </div>
                 </div>

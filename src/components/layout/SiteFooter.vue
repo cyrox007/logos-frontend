@@ -7,7 +7,7 @@
             </div>
             <nav class="footer__links" aria-label="Навигация внизу страницы">
                 <router-link :to="{ name: 'home' }">Главная</router-link>
-                <router-link :to="{ name: 'lecture' }">Каталог знаний</router-link>
+                <router-link :to="{ name: 'catalog' }">Каталог знаний</router-link>
                 <router-link :to="{ name: 'home', hash: '#principles' }">О проекте</router-link>
             </nav>
         </div>
