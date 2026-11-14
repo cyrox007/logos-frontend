@@ -11,10 +11,7 @@ const pages = [
     'src/pages/CategoryPage.vue',
     'src/pages/PublicationPage.vue'
 ];
-const sections = [
-    'src/components/home/HomeCategories.vue',
-    'src/components/home/HomeLatest.vue'
-];
+const sections = ['src/components/home/HomeCategories.vue', 'src/components/home/HomeLatest.vue'];
 
 test('Все асинхронные страницы и секции имеют загрузку, ошибку и пустое состояние', () => {
     for (const file of [...pages, ...sections]) {
