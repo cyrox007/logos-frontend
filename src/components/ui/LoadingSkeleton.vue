@@ -7,11 +7,7 @@
         aria-busy="true"
     >
         <span class="sr-only">{{ label }}</span>
-        <div
-            v-if="variant === 'article'"
-            class="loading-skeleton__article"
-            aria-hidden="true"
-        >
+        <div v-if="variant === 'article'" class="loading-skeleton__article" aria-hidden="true">
             <div class="loading-skeleton__sheet">
                 <div class="skeleton-line skeleton-line--short"></div>
                 <div class="skeleton-line skeleton-line--heading"></div>
