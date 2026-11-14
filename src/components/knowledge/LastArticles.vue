@@ -3,7 +3,7 @@
         <article v-for="(post, index) in posts" :key="post.id || post.slug" class="latest-card" :class="{ 'latest-card--featured': index === 0 }">
             <router-link
                 class="latest-card__link"
-                :to="{ name: 'article', params: { catName: post.category?.slug || 'materials', slug: post.slug } }"
+                :to="{ name: 'publication', params: { catName: post.category?.slug || 'materials', slug: post.slug } }"
             >
                 <div class="latest-card__heading">
                     <span class="latest-card__category">{{ post.category?.title || 'Материал' }}</span>
@@ -23,15 +23,12 @@
 </template>
 
 <script>
+import { formatPublicationDate } from '@/domain/publication.mjs';
+
 export default {
     name: 'LastArticles',
     props: { posts: { type: Array, default: () => [] } },
-    methods: {
-        formatDate(value) {
-            const date = new Date(value);
-            return Number.isNaN(date.getTime()) ? '' : new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
-        }
-    }
+    methods: { formatDate: formatPublicationDate }
 };
 </script>
 

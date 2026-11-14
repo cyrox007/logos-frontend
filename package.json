@@ -6,7 +6,7 @@
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
         "lint": "vue-cli-service lint",
-        "verify": "node scripts/verify-public-client.js"
+        "verify": "node scripts/verify-public-client.js && node --test tests/*.test.mjs"
     },
     "dependencies": {
         "@vue/cli-service": "^5.0.8",

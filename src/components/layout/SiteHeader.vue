@@ -9,11 +9,11 @@
 
             <nav class="site-header__nav" aria-label="Основная навигация">
                 <router-link :to="{ name: 'home' }" exact-active-class="is-current">Главная</router-link>
-                <router-link :to="{ name: 'lecture' }" active-class="is-current">Каталог знаний</router-link>
+                <router-link :to="{ name: 'catalog' }" active-class="is-current">Каталог знаний</router-link>
                 <router-link :to="{ name: 'home', hash: '#principles' }">О проекте</router-link>
             </nav>
 
-            <router-link class="site-header__action" :to="{ name: 'lecture' }">
+            <router-link class="site-header__action" :to="{ name: 'catalog' }">
                 Исследовать <span aria-hidden="true">↗</span>
             </router-link>
 
@@ -32,7 +32,7 @@
         <nav v-if="menuOpen" id="logos-mobile-nav" class="mobile-nav" aria-label="Мобильная навигация">
             <div class="container mobile-nav__inner">
                 <router-link :to="{ name: 'home' }" @click="menuOpen = false">Главная</router-link>
-                <router-link :to="{ name: 'lecture' }" @click="menuOpen = false">Каталог знаний</router-link>
+                <router-link :to="{ name: 'catalog' }" @click="menuOpen = false">Каталог знаний</router-link>
                 <router-link :to="{ name: 'home', hash: '#principles' }" @click="menuOpen = false">О проекте</router-link>
             </div>
         </nav>
@@ -41,7 +41,7 @@
 
 <script>
 export default {
-    name: 'HeaderNavbar',
+    name: 'SiteHeader',
     data() { return { menuOpen: false }; },
     watch: {
         '$route.fullPath'() { this.menuOpen = false; }

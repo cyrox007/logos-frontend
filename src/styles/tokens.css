@@ -1,0 +1,17 @@
+:root {
+    --color-text: #20372e;
+    --color-text-muted: #62746a;
+    --color-accent: #267f5d;
+    --color-accent-dark: #1d6149;
+    --color-accent-soft: #e4f2e8;
+    --color-gold: #ae8745;
+    --color-gold-soft: #f5ecd9;
+    --color-border: #dce6dc;
+    --color-surface: #ffffff;
+    --color-surface-muted: #f0f5ee;
+    --color-background: #fafbf6;
+    --shadow-soft: 0 18px 48px rgba(33, 77, 54, .06);
+    --shadow-hover: 0 24px 58px rgba(33, 77, 54, .12);
+    --font-display: Georgia, "Times New Roman", serif;
+    --font-body: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}

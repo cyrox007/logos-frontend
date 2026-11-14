@@ -1,13 +1,7 @@
 <template>
     <main class="publication-list">
         <div class="container">
-            <nav class="breadcrumbs" aria-label="Навигационная цепочка">
-                <router-link :to="{ name: 'home' }">Главная</router-link>
-                <span class="breadcrumbs__separator" aria-hidden="true">/</span>
-                <router-link :to="{ name: 'lecture' }">Каталог знаний</router-link>
-                <span class="breadcrumbs__separator" aria-hidden="true">/</span>
-                <span aria-current="page">{{ categoryTitle }}</span>
-            </nav>
+            <PageBreadcrumbs :items="breadcrumbs" />
 
             <header class="publication-list__header">
                 <span class="eyebrow">Рубрика библиотеки</span>
@@ -21,10 +15,7 @@
                     <h2>Материалы рубрики</h2>
                     <p v-if="!isLoading && !error">{{ articles.length }} {{ materialWord(articles.length) }}</p>
                 </div>
-                <label class="search-field">
-                    <span aria-hidden="true">⌕</span>
-                    <input v-model.trim="query" type="search" placeholder="Поиск по материалам..." aria-label="Поиск по материалам рубрики">
-                </label>
+                <SearchField v-model="query" placeholder="Поиск по материалам..." label="Поиск по материалам рубрики" />
             </div>
 
             <div v-if="isLoading" class="state-card" role="status">Загружаем публикации…</div>
@@ -35,31 +26,35 @@
             <div v-else-if="query" class="state-card">По запросу «{{ query }}» материалы не найдены.</div>
             <div v-else class="state-card">В этой рубрике пока нет опубликованных материалов.</div>
 
-            <router-link class="publication-list__back text-link" :to="{ name: 'lecture' }">← Вернуться к каталогу</router-link>
+            <router-link class="publication-list__back text-link" :to="{ name: 'catalog' }">← Вернуться к каталогу</router-link>
         </div>
     </main>
 </template>
 
 <script>
-import ArticleElement from '@/components/Articles/ArticleElement.vue';
+import ArticleElement from '@/components/knowledge/ArticleElement.vue';
+import PageBreadcrumbs from '@/components/ui/PageBreadcrumbs.vue';
+import SearchField from '@/components/ui/SearchField.vue';
+import { filterByFields, russianPlural } from '@/domain/publication.mjs';
 import PublicContentService from '@/API/PublicContentService';
 import { applyCategorySeo } from '@/seo';
 
 export default {
-    name: 'LectureListPage',
-    components: { ArticleElement },
+    name: 'CategoryPage',
+    components: { ArticleElement, PageBreadcrumbs, SearchField },
     data() {
         return { isLoading: true, error: '', categoryTitle: '', categoryDescription: '', articles: [], query: '' };
     },
     computed: {
+        breadcrumbs() {
+            return [
+                { label: 'Главная', to: { name: 'home' } },
+                { label: 'Каталог знаний', to: { name: 'catalog' } },
+                { label: this.categoryTitle }
+            ];
+        },
         filteredArticles() {
-            const term = this.query.toLocaleLowerCase('ru-RU');
-            if (!term) return this.articles;
-            return this.articles.filter(item =>
-                [item.title, item.excerpt].some(value =>
-                    String(value || '').toLocaleLowerCase('ru-RU').includes(term)
-                )
-            );
+            return filterByFields(this.articles, this.query, ['title', 'excerpt']);
         }
     },
     watch: {
@@ -96,23 +91,8 @@ export default {
             }
         },
         materialWord(count) {
-            if (count % 10 === 1 && count % 100 !== 11) return 'материал';
-            if (count % 10 >= 2 && count % 10 <= 4 && (count % 100 < 12 || count % 100 > 14)) return 'материала';
-            return 'материалов';
+            return russianPlural(count, ['материал', 'материала', 'материалов']);
         }
     }
 };
 </script>
-
-<style>
-.publication-list { padding: 46px 0 95px; }
-.publication-list__header { padding: 45px 0 60px; border-bottom: 1px solid var(--color-border); }
-.publication-list__header h1 { margin: 18px 0; max-width: 880px; font-size: clamp(48px, 6vw, 80px); line-height: 1.06; letter-spacing: -.045em; }
-.publication-list__header p { max-width: 750px; color: var(--color-text-muted); font-size: 17px; }
-.publication-list__toolbar { display: flex; align-items: center; justify-content: space-between; gap: 25px; padding: 40px 0 24px; }
-.publication-list__toolbar h2 { font-size: 32px; }
-.publication-list__toolbar p { color: var(--color-text-muted); font-size: 13px; }
-.publication-list__items { display: grid; gap: 13px; }
-.publication-list__back { margin-top: 35px; }
-@media (max-width: 620px) { .publication-list { padding: 30px 0 70px; } .publication-list__header { padding: 22px 0 36px; } .publication-list__header h1 { font-size: 48px; } .publication-list__toolbar { align-items: stretch; flex-direction: column; padding-top: 28px; } }
-</style>
