@@ -25,7 +25,13 @@ jobs:
       - name: Установить зависимости
         run: npm ci
 
-      - name: Проверить границы публичного клиента
+      - name: Проверить правила ESLint
+        run: npm run lint
+
+      - name: Проверить форматирование
+        run: npm run format:check
+
+      - name: Проверить архитектуру и доменную логику
         run: npm run verify
 
       - name: Собрать production frontend

@@ -1,0 +1,48 @@
+name: Временная автоматическая правка стиля
+
+on:
+  push:
+    branches: [quality/readable-code-and-ci]
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: quality/readable-code-and-ci
+          persist-credentials: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Зафиксировать зависимости инструментов проверки
+        run: npm install --save-dev --save-exact eslint@8.57.1 eslint-plugin-vue@9.33.0 @babel/eslint-parser@7.28.0 prettier@2.8.8
+
+      - name: Привести файлы к общему стилю
+        run: |
+          npm run format
+          npm run lint:fix
+          npm run format
+
+      - name: Проверить код
+        run: |
+          npm run lint
+          npm run format:check
+          npm run verify
+          VUE_APP_SERVER=https://example.invalid VUE_APP_SITE_KEY=logos npm run build
+
+      - name: Сохранить исправления в ветку
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json src scripts tests
+          if ! git diff --cached --quiet; then
+            git commit -m "style: единое форматирование и исправления ESLint"
+            git push origin HEAD:quality/readable-code-and-ci
+          fi

@@ -5,8 +5,12 @@
     "scripts": {
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
-        "lint": "vue-cli-service lint",
-        "verify": "node scripts/verify-public-client.js && node --test tests/*.test.mjs"
+        "lint": "eslint --max-warnings=0 \"src/**/*.{js,mjs,vue}\" \"scripts/**/*.js\" \"tests/**/*.mjs\"",
+        "verify": "node scripts/verify-public-client.js && node --test tests/*.test.mjs",
+        "lint:fix": "eslint --fix \"src/**/*.{js,mjs,vue}\" \"scripts/**/*.js\" \"tests/**/*.mjs\"",
+        "format": "prettier --write \"src/**/*.{vue,js,mjs,css}\" \"scripts/**/*.js\" \"tests/**/*.mjs\"",
+        "format:check": "prettier --check \"src/**/*.{vue,js,mjs,css}\" \"scripts/**/*.js\" \"tests/**/*.mjs\"",
+        "check": "npm run lint && npm run format:check && npm run verify && npm run build"
     },
     "dependencies": {
         "@vue/cli-service": "^5.0.8",
@@ -18,21 +22,37 @@
     "eslintConfig": {
         "root": true,
         "env": {
-            "node": true
+            "node": true,
+            "browser": true,
+            "es2022": true
         },
         "extends": [
             "plugin:vue/vue3-essential",
             "eslint:recommended"
         ],
         "parserOptions": {
-            "parser": "@babel/eslint-parser"
+            "parser": "@babel/eslint-parser",
+            "requireConfigFile": false,
+            "ecmaVersion": "latest",
+            "sourceType": "module"
         },
-        "rules": {}
+        "rules": {
+            "eqeqeq": "error",
+            "no-debugger": "error",
+            "no-var": "error",
+            "prefer-const": "error"
+        }
     },
     "browserslist": [
         "> 1%",
         "last 2 versions",
         "not dead",
         "not ie 11"
-    ]
+    ],
+    "devDependencies": {
+        "@babel/eslint-parser": "7.28.0",
+        "eslint": "8.57.1",
+        "eslint-plugin-vue": "9.33.0",
+        "prettier": "2.8.8"
+    }
 }
