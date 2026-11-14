@@ -53,7 +53,7 @@ const checks = [
     ['сохранена отдельная публичная витрина без авторизации и CMS', () => {
         const router = read('src/router/index.js');
         return !['/login', '/registration', '/panel/', '/profile'].some(x => router.includes(x)) &&
-            ['src/pages/LoginPage.vue', 'src/API/AuthService.js', 'src/store/index.js'].every(x => !exists(x));
+            ['src/pages/LoginPage.vue', 'src/API/AuthService.js', 'src/store/index.js', 'src/API/CategoriesService.js', 'src/components/UI/ContentLoader/index.vue'].every(x => !exists(x));
     }],
     ['все компоненты и уровни иерархии присутствуют', () => required.every(exists)],
     ['все внутренние импорты компонентов разрешаются', validateImports],
