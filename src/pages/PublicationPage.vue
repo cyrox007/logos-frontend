@@ -138,6 +138,11 @@ export default {
             try {
                 const response = await PublicContentService.getPublication(slug);
                 if (slug !== this.$route.params.slug) return;
+                if (!response.data?.item) {
+                    this.notFound = true;
+                    this.error = 'Проверьте адрес или вернитесь в каталог.';
+                    return;
+                }
                 this.article = response.data.item;
                 applyArticleSeo(this.article);
             } catch (error) {
