@@ -14,24 +14,48 @@
                     >Все рубрики <span aria-hidden="true">↗</span></router-link
                 >
             </div>
-            <div v-if="categoriesLoading" class="state-card" role="status">Загружаем рубрики…</div>
-            <div v-else-if="categoriesError" class="state-card state-card--error" role="alert">
-                {{ categoriesError }}
-            </div>
-            <div v-else-if="categories.length" class="home-categories__grid">
-                <CategoryArticles :categories="categories.slice(0, 6)" />
-            </div>
-            <div v-else class="state-card">Рубрики пока готовятся к публикации.</div>
+            <Transition name="content-switch" mode="out-in">
+                <LoadingSkeleton
+                    v-if="categoriesLoading"
+                    key="loading"
+                    variant="grid"
+                    label="Загружаем рубрики…"
+                />
+                <AsyncState
+                    v-else-if="categoriesError"
+                    key="error"
+                    type="error"
+                    title="Не удалось загрузить рубрики"
+                    :message="categoriesError"
+                    action-label="Повторить"
+                    @action="$emit('retry')"
+                />
+                <CategoryArticles
+                    v-else-if="categories.length"
+                    key="content"
+                    layout="home"
+                    :categories="categories.slice(0, 6)"
+                />
+                <AsyncState
+                    v-else
+                    key="empty"
+                    title="Рубрики пока готовятся"
+                    message="Здесь появятся направления и темы после публикации первых материалов."
+                />
+            </Transition>
         </div>
     </section>
 </template>
 
 <script>
 import CategoryArticles from '@/components/knowledge/CategoryArticles.vue';
+import LoadingSkeleton from '@/components/ui/LoadingSkeleton.vue';
+import AsyncState from '@/components/ui/AsyncState.vue';
 
 export default {
     name: 'HomeCategories',
-    components: { CategoryArticles },
+    components: { CategoryArticles, LoadingSkeleton, AsyncState },
+    emits: ['retry'],
     props: {
         categories: { type: Array, default: () => [] },
         categoriesLoading: { type: Boolean, default: false },

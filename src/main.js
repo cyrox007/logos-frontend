@@ -1,5 +1,6 @@
 import '@/styles/tokens.css';
 import '@/styles/base.css';
+import '@/styles/states.css';
 import '@/styles/home.css';
 import '@/styles/catalog.css';
 import '@/styles/category.css';

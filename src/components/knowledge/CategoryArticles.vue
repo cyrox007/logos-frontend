@@ -1,8 +1,15 @@
 <template>
-    <article
+    <TransitionGroup
+        name="card-list"
+        tag="div"
+        :class="layout === 'home' ? 'home-categories__grid' : 'catalog-page__grid'"
+        appear
+    >
+        <article
         v-for="(category, index) in categories"
         :key="category.id || category.slug"
         class="category-card"
+        :style="{ '--item-index': Math.min(index, 6) }"
     >
         <router-link
             class="category-card__link"
@@ -20,14 +27,16 @@
             </div>
             <span class="category-card__more">К материалам <span aria-hidden="true">↗</span></span>
         </router-link>
-    </article>
+        </article>
+    </TransitionGroup>
 </template>
 
 <script>
 export default {
     name: 'CategoryArticles',
     props: {
-        categories: { type: Array, default: () => [] }
+        categories: { type: Array, default: () => [] },
+        layout: { type: String, default: 'catalog' }
     }
 };
 </script>

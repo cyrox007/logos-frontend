@@ -1,8 +1,9 @@
 <template>
-    <div class="latest-grid">
+    <TransitionGroup name="card-list" tag="div" class="latest-grid" appear>
         <article
             v-for="(post, index) in posts"
             :key="post.id || post.slug"
+            :style="{ '--item-index': Math.min(index, 6) }"
             class="latest-card"
             :class="{ 'latest-card--featured': index === 0 }"
         >
@@ -31,7 +32,7 @@
                 </div>
             </router-link>
         </article>
-    </div>
+    </TransitionGroup>
 </template>
 
 <script>

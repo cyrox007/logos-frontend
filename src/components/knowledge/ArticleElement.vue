@@ -1,7 +1,9 @@
 <template>
-    <article
+    <TransitionGroup name="card-list" tag="div" class="publication-list__items" appear>
+        <article
         v-for="(article, index) in articles"
         :key="article.id || article.slug"
+        :style="{ '--item-index': Math.min(index, 6) }"
         class="article-card"
     >
         <router-link
@@ -24,7 +26,8 @@
             </div>
             <span class="article-card__more">Читать <span aria-hidden="true">↗</span></span>
         </router-link>
-    </article>
+        </article>
+    </TransitionGroup>
 </template>
 
 <script>

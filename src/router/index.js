@@ -37,7 +37,10 @@ const router = createRouter({
     routes,
     scrollBehavior(to, from, savedPosition) {
         if (savedPosition) return savedPosition;
-        if (to.hash) return { el: to.hash, top: 110, behavior: 'smooth' };
+        if (to.hash) {
+            const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+            return { el: to.hash, top: 110, behavior: reducedMotion ? 'auto' : 'smooth' };
+        }
         return { top: 0 };
     }
 });
