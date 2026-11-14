@@ -33,7 +33,9 @@ src/
 ├── router/index.js               публичные маршруты
 ├── API/                          клиент публичного API JSInteractive
 ├── domain/publication.mjs        чистые функции модели публикаций
-├── seo/index.js                  заголовки, canonical, OpenGraph, JSON-LD
+│   ├── domain/toc.mjs                построение оглавления
+├── seo/index.js                  применение метаданных в DOM
+│   ├── seo/descriptors.mjs          проверяемые определения SEO
 ├── pages/                        страницы: данные, состояния, SEO
 │   ├── HomePage.vue
 │   ├── CatalogPage.vue
@@ -76,7 +78,9 @@ src/
 
 ## Проверки
 
-- `npm run verify` — проверки границ клиента, связности импортов, структуры компонентов и доменной логики.
+- `npm run lint` — ESLint для Vue, JavaScript и тестов.
+- `npm run format:check` — детерминированная проверка Prettier.
+- `npm run verify` — проверки границ клиента, связности импортов, структуры компонентов, доменной логики, SEO и оглавления.
 - `npm run build` — production-сборка Vue.
 - Ручная приёмка: переходы со старых URL, мобильная навигация, пустые рубрики, длинные статьи, оглавление, библиография и прямое открытие внутренних URL на веб-сервере.
 
