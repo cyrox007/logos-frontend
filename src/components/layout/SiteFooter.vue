@@ -19,7 +19,7 @@
 </template>
 
 <script>
-export default { name: 'PageFooter' };
+export default { name: 'SiteFooter' };
 </script>
 
 <style>

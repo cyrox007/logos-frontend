@@ -41,7 +41,7 @@
 
 <script>
 export default {
-    name: 'HeaderNavbar',
+    name: 'SiteHeader',
     data() { return { menuOpen: false }; },
     watch: {
         '$route.fullPath'() { this.menuOpen = false; }
