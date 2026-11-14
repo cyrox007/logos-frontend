@@ -1,43 +1,36 @@
 <template>
     <footer class="footer">
         <div class="container footer__inner">
-            <span>λόγος</span>
-            <span>Публичная витрина на backend JSInteractive</span>
+            <div class="footer__identity">
+                <router-link :to="{ name: 'home' }" class="footer__logo">λόγος</router-link>
+                <p>Пространство знаний, источников и самостоятельного исследования.</p>
+            </div>
+            <nav class="footer__links" aria-label="Навигация внизу страницы">
+                <router-link :to="{ name: 'home' }">Главная</router-link>
+                <router-link :to="{ name: 'lecture' }">Каталог знаний</router-link>
+                <router-link :to="{ name: 'home', hash: '#principles' }">О проекте</router-link>
+            </nav>
+        </div>
+        <div class="container footer__bottom">
+            <span>Logos · Независимая библиотека знаний</span>
+            <span>Содержание и представление — Logos</span>
         </div>
     </footer>
 </template>
 
 <script>
-export default {
-    name: 'PageFooter'
-};
+export default { name: 'PageFooter' };
 </script>
 
 <style>
-.footer {
-    margin-top: auto;
-    border-top: 1px solid var(--color-border);
-}
-.footer__inner {
-    min-height: 84px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    color: var(--color-text-muted);
-    font-size: 14px;
-    text-align: left;
-}
-.footer__inner span:first-child {
-    color: var(--color-text);
-    font-size: 24px;
-    font-weight: 800;
-}
-@media (max-width: 620px) {
-    .footer__inner {
-        padding: 20px 0;
-        align-items: flex-start;
-        flex-direction: column;
-    }
-}
+.footer { margin-top: auto; border-top: 1px solid var(--color-border); background: #f2f6ef; }
+.footer__inner { padding: 58px 0 44px; display: flex; align-items: start; justify-content: space-between; gap: 40px; }
+.footer__identity { max-width: 400px; }
+.footer__logo { font: 500 42px/1 var(--font-display); color: var(--color-accent-dark); text-decoration: none; }
+.footer__identity p { margin-top: 15px; color: var(--color-text-muted); font-size: 14px; }
+.footer__links { display: flex; flex-wrap: wrap; gap: 14px 30px; padding-top: 10px; }
+.footer__links a { color: var(--color-text); font-size: 14px; font-weight: 600; text-decoration: none; }
+.footer__links a:hover { color: var(--color-accent); }
+.footer__bottom { display: flex; justify-content: space-between; gap: 16px; padding: 22px 0 28px; border-top: 1px solid var(--color-border); color: var(--color-text-muted); font-size: 12px; }
+@media (max-width: 700px) { .footer__inner, .footer__bottom { flex-direction: column; } .footer__inner { padding: 38px 0 28px; gap: 26px; } }
 </style>
