@@ -31,10 +31,13 @@ export function createBrandLoadingController({
             if (!path) return;
             stop();
             activePath = path;
-            timer = schedule(() => {
-                timer = null;
-                if (activePath === path) setVisible(true);
-            }, firstLoad ? initialDelay : longDelay);
+            timer = schedule(
+                () => {
+                    timer = null;
+                    if (activePath === path) setVisible(true);
+                },
+                firstLoad ? initialDelay : longDelay
+            );
         },
         finish(path) {
             if (path !== activePath) return;
