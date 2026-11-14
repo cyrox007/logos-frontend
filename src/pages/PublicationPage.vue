@@ -3,7 +3,7 @@
         <div class="container">
             <PageBreadcrumbs :items="breadcrumbs" />
 
-            <Transition name="content-switch" mode="out-in">
+            <Transition name="content-switch" mode="out-in" @after-enter="buildToc">
                 <LoadingSkeleton
                     v-if="isLoading"
                     key="loading"
@@ -20,34 +20,34 @@
                     @action="loadArticle"
                 />
                 <div v-else-if="article" key="article" class="article-page__layout">
-                <article class="article-sheet">
-                    <ArticleHeader
-                        :article="article"
-                        :profile="profile"
-                        :category-title="categoryTitle"
-                        :reading-minutes="readingMinutes"
-                    />
-                    <ArticleContent
-                        v-if="article.content"
-                        ref="articleContent"
-                        :html="article.content"
-                    />
-                    <div v-else class="article-sheet__reading">
-                        <AsyncState
-                            title="Текст пока недоступен"
-                            message="Для этого материала ещё не опубликован основной текст."
+                    <article class="article-sheet">
+                        <ArticleHeader
+                            :article="article"
+                            :profile="profile"
+                            :category-title="categoryTitle"
+                            :reading-minutes="readingMinutes"
                         />
-                    </div>
-                    <ArticleSources :items="bibliography" />
-                    <div class="article-sheet__return">
-                        <router-link
-                            class="text-link"
-                            :to="{ name: 'category', params: { catName: categorySlug } }"
-                        >
-                            ← Вернуться к материалам рубрики
-                        </router-link>
-                    </div>
-                </article>
+                        <ArticleContent
+                            v-if="article.content"
+                            ref="articleContent"
+                            :html="article.content"
+                        />
+                        <div v-else class="article-sheet__reading">
+                            <AsyncState
+                                title="Текст пока недоступен"
+                                message="Для этого материала ещё не опубликован основной текст."
+                            />
+                        </div>
+                        <ArticleSources :items="bibliography" />
+                        <div class="article-sheet__return">
+                            <router-link
+                                class="text-link"
+                                :to="{ name: 'category', params: { catName: categorySlug } }"
+                            >
+                                ← Вернуться к материалам рубрики
+                            </router-link>
+                        </div>
+                    </article>
 
                     <ArticleAside :toc-items="tocItems" />
                 </div>
@@ -125,6 +125,9 @@ export default {
         this.loadArticle();
     },
     methods: {
+        buildToc() {
+            this.tocItems = this.$refs.articleContent?.buildToc() || [];
+        },
         async loadArticle() {
             const slug = this.$route.params.slug;
             this.isLoading = true;
@@ -149,7 +152,7 @@ export default {
                     this.isLoading = false;
                     await this.$nextTick();
                     if (slug === this.$route.params.slug) {
-                        this.tocItems = this.$refs.articleContent?.buildToc() || [];
+                        this.buildToc();
                     }
                 }
             }
