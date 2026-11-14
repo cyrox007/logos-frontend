@@ -4,7 +4,9 @@
         :class="'async-state--' + type"
         :role="type === 'error' ? 'alert' : 'status'"
     >
-        <span class="async-state__symbol" aria-hidden="true">{{ type === 'error' ? '!' : '✦' }}</span>
+        <span class="async-state__symbol" aria-hidden="true">{{
+            type === 'error' ? '!' : '✦'
+        }}</span>
         <h3>{{ title }}</h3>
         <p v-if="message">{{ message }}</p>
         <button
