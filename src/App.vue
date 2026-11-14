@@ -6,9 +6,7 @@
                 <div class="brand-intro__panel">
                     <span class="sr-only">Загружаем библиотеку Logos…</span>
                     <KnowledgeLoader variant="full" />
-                    <p class="brand-intro__caption" aria-hidden="true">
-                        От вопроса — к пониманию
-                    </p>
+                    <p class="brand-intro__caption" aria-hidden="true">От вопроса — к пониманию</p>
                 </div>
             </div>
         </Transition>
