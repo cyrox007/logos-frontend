@@ -40,7 +40,7 @@ import ArticleSources from '@/components/article/ArticleSources.vue';
 import ArticleAside from '@/components/article/ArticleAside.vue';
 
 export default {
-    name: 'ArticlePage',
+    name: 'PublicationPage',
     components: { PageBreadcrumbs, ArticleHeader, ArticleContent, ArticleSources, ArticleAside },
     data() {
         return { isLoading: true, error: '', article: null, tocItems: [] };
@@ -54,7 +54,7 @@ export default {
         breadcrumbs() {
             return [
                 { label: 'Главная', to: { name: 'home' } },
-                { label: 'Каталог знаний', to: { name: 'lecture' } },
+                { label: 'Каталог знаний', to: { name: 'catalog' } },
                 { label: this.categoryTitle, to: { name: 'category', params: { catName: this.categorySlug } } },
                 { label: this.article?.title || 'Материал' }
             ];

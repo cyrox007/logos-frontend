@@ -39,7 +39,7 @@ import PublicContentService from '@/API/PublicContentService';
 import { applyCatalogSeo } from '@/seo';
 
 export default {
-    name: 'LecturePage',
+    name: 'CatalogPage',
     components: { CategoryArticles, PageBreadcrumbs, SearchField },
     data() {
         return {

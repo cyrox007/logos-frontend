@@ -24,7 +24,7 @@ import PublicContentService from '@/API/PublicContentService';
 import { applyHomeSeo } from '@/seo';
 
 export default {
-    name: 'MainPage',
+    name: 'HomePage',
     components: { HomeHero, HomeCategories, HomeLatest, HomePrinciples },
     data() {
         return {

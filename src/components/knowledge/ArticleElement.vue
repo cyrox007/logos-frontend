@@ -2,7 +2,7 @@
     <article v-for="(article, index) in articles" :key="article.id || article.slug" class="article-card">
         <router-link
             class="article-card__link"
-            :to="{ name: 'article', params: { catName: article.category?.slug || 'materials', slug: article.slug } }"
+            :to="{ name: 'publication', params: { catName: article.category?.slug || 'materials', slug: article.slug } }"
         >
             <span class="article-card__number">{{ String(index + 1).padStart(2, '0') }}</span>
             <div class="article-card__body">
@@ -17,15 +17,12 @@
 </template>
 
 <script>
+import { formatPublicationDate } from '@/domain/publication.mjs';
+
 export default {
     name: 'ArticleElement',
     props: { articles: { type: Array, default: () => [] } },
-    methods: {
-        formatDate(value) {
-            const date = new Date(value);
-            return Number.isNaN(date.getTime()) ? '' : new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
-        }
-    }
+    methods: { formatDate: formatPublicationDate }
 };
 </script>
 

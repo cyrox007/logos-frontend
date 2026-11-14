@@ -26,7 +26,7 @@
             <div v-else-if="query" class="state-card">По запросу «{{ query }}» материалы не найдены.</div>
             <div v-else class="state-card">В этой рубрике пока нет опубликованных материалов.</div>
 
-            <router-link class="publication-list__back text-link" :to="{ name: 'lecture' }">← Вернуться к каталогу</router-link>
+            <router-link class="publication-list__back text-link" :to="{ name: 'catalog' }">← Вернуться к каталогу</router-link>
         </div>
     </main>
 </template>
@@ -40,7 +40,7 @@ import PublicContentService from '@/API/PublicContentService';
 import { applyCategorySeo } from '@/seo';
 
 export default {
-    name: 'LectureListPage',
+    name: 'CategoryPage',
     components: { ArticleElement, PageBreadcrumbs, SearchField },
     data() {
         return { isLoading: true, error: '', categoryTitle: '', categoryDescription: '', articles: [], query: '' };
@@ -49,7 +49,7 @@ export default {
         breadcrumbs() {
             return [
                 { label: 'Главная', to: { name: 'home' } },
-                { label: 'Каталог знаний', to: { name: 'lecture' } },
+                { label: 'Каталог знаний', to: { name: 'catalog' } },
                 { label: this.categoryTitle }
             ];
         },

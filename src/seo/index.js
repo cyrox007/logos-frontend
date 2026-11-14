@@ -130,7 +130,7 @@ export function applyArticleSeo(article) {
 
     setStructuredData('page', {
         '@context': 'https://schema.org',
-        '@type': article.source_type === 'lecture' ? 'Article' : 'Article',
+        '@type': 'Article',
         headline: article.title,
         description,
         url,
