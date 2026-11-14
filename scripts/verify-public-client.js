@@ -26,6 +26,7 @@ const required = [
     'src/components/article/ArticleSources.vue',
     'src/components/article/ArticleAside.vue',
     'src/domain/publication.mjs',
+    'src/domain/toc.mjs',
     'src/seo/descriptors.mjs',
     'src/styles/tokens.css',
     'src/styles/base.css',
@@ -128,7 +129,8 @@ const checks = [
                 ['ArticleHeader', 'ArticleContent', 'ArticleSources', 'ArticleAside'].every(x =>
                     page.includes(x)
                 ) &&
-                content.includes("querySelectorAll('h2, h3')") &&
+                content.includes('buildArticleToc') &&
+                read('src/domain/toc.mjs').includes("querySelectorAll('h2, h3')") &&
                 page.includes('buildToc()')
             );
         }

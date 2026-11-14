@@ -1,4 +1,4 @@
-import { getPublicationProfile } from '@/domain/publication.mjs';
+import { getPublicationProfile } from '../domain/publication.mjs';
 
 // Данные для поисковых систем формируются без обращения к DOM.
 export function homeSeo(url) {
