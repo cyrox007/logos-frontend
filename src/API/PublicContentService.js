@@ -3,14 +3,15 @@ import Config from '@/Config';
 
 const EXPECTED_CONTRACT = 'jsint-public-v1';
 
-const sitePath = () =>
-    `/api/public/v1/sites/${encodeURIComponent(Config.siteKey)}`;
+const sitePath = () => `/api/public/v1/sites/${encodeURIComponent(Config.siteKey)}`;
 
-const assertContract = (response) => {
+const assertContract = response => {
     const contract = response.headers?.['x-jsint-public-api'];
     if (contract !== EXPECTED_CONTRACT) {
         throw new Error(
-            `Несовместимый публичный API: ожидался ${EXPECTED_CONTRACT}, получено ${contract || 'без версии'}`
+            `Несовместимый публичный API: ожидался ${EXPECTED_CONTRACT}, получено ${
+                contract || 'без версии'
+            }`
         );
     }
     return response;
@@ -41,15 +42,11 @@ export default class PublicContentService {
     }
 
     static async getPublication(slug) {
-        return get(
-            `${sitePath()}/publications/${encodeURIComponent(slug)}`
-        );
+        return get(`${sitePath()}/publications/${encodeURIComponent(slug)}`);
     }
 
     static async getPage(slug) {
-        return get(
-            `${sitePath()}/pages/${encodeURIComponent(slug)}`
-        );
+        return get(`${sitePath()}/pages/${encodeURIComponent(slug)}`);
     }
 }
 

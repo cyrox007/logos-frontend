@@ -9,14 +9,26 @@ const routes = [
     { path: '/', component: HomePage, name: 'home' },
     { path: '/catalog', component: CatalogPage, name: 'catalog' },
     { path: '/catalog/:catName', component: CategoryPage, name: 'category', props: true },
-    { path: '/catalog/:catName/:slug', component: PublicationPage, name: 'publication', props: true },
+    {
+        path: '/catalog/:catName/:slug',
+        component: PublicationPage,
+        name: 'publication',
+        props: true
+    },
 
     // Старые адреса продолжают работать после изменения структуры каталога.
     { path: '/lecture', redirect: { name: 'catalog' } },
-    { path: '/lecture/:catName', redirect: to => ({ name: 'category', params: { catName: to.params.catName } }) },
-    { path: '/lecture/:catName/:slug', redirect: to => ({
-        name: 'publication', params: { catName: to.params.catName, slug: to.params.slug }
-    }) },
+    {
+        path: '/lecture/:catName',
+        redirect: to => ({ name: 'category', params: { catName: to.params.catName } })
+    },
+    {
+        path: '/lecture/:catName/:slug',
+        redirect: to => ({
+            name: 'publication',
+            params: { catName: to.params.catName, slug: to.params.slug }
+        })
+    },
     { path: '/:pathMatch(.*)*', redirect: '/' }
 ];
 

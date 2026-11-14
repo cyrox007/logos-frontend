@@ -1,6 +1,4 @@
-import { getPublicationProfile } from '@/domain/publication.mjs';
-
-const BRAND = 'Logos';
+import { homeSeo, catalogSeo, categorySeo, articleSeo } from '@/seo/descriptors.mjs';
 
 function ensureMeta(selector, attributes) {
     let node = document.head.querySelector(selector);
@@ -10,16 +8,6 @@ function ensureMeta(selector, attributes) {
         document.head.appendChild(node);
     }
     return node;
-}
-
-function setMeta(name, content) {
-    const node = ensureMeta(`meta[name="${name}"]`, { name });
-    node.setAttribute('content', content || '');
-}
-
-function setProperty(property, content) {
-    const node = ensureMeta(`meta[property="${property}"]`, { property });
-    node.setAttribute('content', content || '');
 }
 
 function setCanonical(url) {
@@ -32,118 +20,56 @@ function setCanonical(url) {
     node.setAttribute('href', url);
 }
 
-function canonicalUrl(pathname = window.location.pathname) {
-    return new URL(pathname, window.location.origin).toString();
-}
-
-function setStructuredData(key, payload) {
-    let node = document.head.querySelector(`script[data-logos-seo="${key}"]`);
+function setStructuredData(data) {
+    let node = document.head.querySelector('script[data-logos-seo="page"]');
     if (!node) {
         node = document.createElement('script');
         node.type = 'application/ld+json';
-        node.dataset.logosSeo = key;
+        node.dataset.logosSeo = 'page';
         document.head.appendChild(node);
     }
-    node.textContent = JSON.stringify(payload);
+    node.textContent = JSON.stringify(data);
+}
+
+function canonicalUrl(path = window.location.pathname) {
+    return new URL(path, window.location.origin).toString();
+}
+
+// Единственная точка обновления title, canonical, OpenGraph и JSON-LD.
+function applySeo(metadata) {
+    document.title = metadata.title;
+    ensureMeta('meta[name="description"]', { name: 'description' }).setAttribute(
+        'content',
+        metadata.description
+    );
+    setCanonical(metadata.url);
+
+    const properties = {
+        'og:type': metadata.ogType,
+        'og:site_name': 'Logos',
+        'og:title': metadata.title,
+        'og:description': metadata.description,
+        'og:url': metadata.url
+    };
+    Object.entries(properties).forEach(([property, value]) => {
+        ensureMeta(`meta[property="${property}"]`, { property }).setAttribute('content', value);
+    });
+
+    setStructuredData(metadata.structuredData);
 }
 
 export function applyHomeSeo() {
-    const title = 'Logos — библиотека знаний и исследований';
-    const description = 'Logos — библиотека знаний, тематических материалов, источников и самостоятельных исследований.';
-
-    document.title = title;
-    setMeta('description', description);
-    setCanonical(canonicalUrl('/'));
-    setProperty('og:type', 'website');
-    setProperty('og:site_name', BRAND);
-    setProperty('og:title', title);
-    setProperty('og:description', description);
-    setProperty('og:url', canonicalUrl('/'));
-    setStructuredData('page', {
-        '@context': 'https://schema.org',
-        '@type': 'WebSite',
-        name: BRAND,
-        url: canonicalUrl('/'),
-        description
-    });
+    applySeo(homeSeo(canonicalUrl('/')));
 }
 
 export function applyCatalogSeo() {
-    const title = 'База знаний | Logos';
-    const description = 'Рубрики, статьи, исследования и источники библиотеки Logos.';
-    const url = canonicalUrl('/catalog');
-
-    document.title = title;
-    setMeta('description', description);
-    setCanonical(url);
-    setProperty('og:type', 'website');
-    setProperty('og:site_name', BRAND);
-    setProperty('og:title', title);
-    setProperty('og:description', description);
-    setProperty('og:url', url);
-    setStructuredData('page', {
-        '@context': 'https://schema.org',
-        '@type': 'CollectionPage',
-        name: title,
-        url,
-        description
-    });
+    applySeo(catalogSeo(canonicalUrl('/catalog')));
 }
 
 export function applyCategorySeo(category) {
-    const name = category?.title || 'База знаний';
-    const description = category?.description || `Материалы рубрики «${name}» на Logos.`;
-    const title = `${name} | Logos`;
-
-    document.title = title;
-    setMeta('description', description);
-    setCanonical(canonicalUrl());
-    setProperty('og:type', 'website');
-    setProperty('og:site_name', BRAND);
-    setProperty('og:title', title);
-    setProperty('og:description', description);
-    const url = canonicalUrl();
-    setProperty('og:url', url);
-    setStructuredData('page', {
-        '@context': 'https://schema.org',
-        '@type': 'CollectionPage',
-        name: title,
-        url,
-        description
-    });
+    applySeo(categorySeo(category, canonicalUrl()));
 }
 
 export function applyArticleSeo(article) {
-    const title = `${article.title} | Logos`;
-    const profile = getPublicationProfile(article);
-    const description = profile.abstract || article.excerpt || `Материал «${article.title}» на Logos.`;
-    const url = canonicalUrl();
-
-    document.title = title;
-    setMeta('description', description);
-    setCanonical(url);
-    setProperty('og:type', 'article');
-    setProperty('og:site_name', BRAND);
-    setProperty('og:title', title);
-    setProperty('og:description', description);
-    setProperty('og:url', url);
-
-    setStructuredData('page', {
-        '@context': 'https://schema.org',
-        '@type': 'Article',
-        headline: article.title,
-        description,
-        url,
-        datePublished: article.published_at || undefined,
-        dateModified: article.updated_at || undefined,
-        keywords: Array.isArray(profile.keywords) ? profile.keywords.join(', ') : undefined,
-        author: profile.speaker
-            ? {'@type': 'Person', name: profile.speaker}
-            : undefined,
-        isPartOf: {
-            '@type': 'WebSite',
-            name: BRAND,
-            url: canonicalUrl('/')
-        }
-    });
+    applySeo(articleSeo(article, canonicalUrl(), canonicalUrl('/')));
 }

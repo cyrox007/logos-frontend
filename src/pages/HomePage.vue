@@ -6,11 +6,7 @@
             :categories-loading="categoriesLoading"
             :categories-error="categoriesError"
         />
-        <HomeLatest
-            :posts="posts"
-            :posts-loading="postsLoading"
-            :posts-error="postsError"
-        />
+        <HomeLatest :posts="posts" :posts-loading="postsLoading" :posts-error="postsError" />
         <HomePrinciples />
     </main>
 </template>
@@ -47,7 +43,8 @@ export default {
                 this.categories = response.data.items || [];
             } catch (error) {
                 console.error(error);
-                this.categoriesError = 'Не удалось загрузить рубрики. Попробуйте обновить страницу.';
+                this.categoriesError =
+                    'Не удалось загрузить рубрики. Попробуйте обновить страницу.';
             } finally {
                 this.categoriesLoading = false;
             }

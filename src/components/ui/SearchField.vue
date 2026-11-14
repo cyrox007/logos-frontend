@@ -7,7 +7,7 @@
             :placeholder="placeholder"
             :aria-label="label"
             @input="$emit('update:modelValue', $event.target.value)"
-        >
+        />
     </label>
 </template>
 
