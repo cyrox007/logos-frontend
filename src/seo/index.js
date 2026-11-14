@@ -1,3 +1,5 @@
+import { getPublicationProfile } from '@/domain/publication.mjs';
+
 const BRAND = 'Logos';
 
 function ensureMeta(selector, attributes) {
@@ -43,20 +45,6 @@ function setStructuredData(key, payload) {
         document.head.appendChild(node);
     }
     node.textContent = JSON.stringify(payload);
-}
-
-function profileData(article) {
-    const envelope = article?.data;
-    if (
-        !envelope ||
-        envelope.version !== 1 ||
-        !['logos.article', 'logos.lecture'].includes(envelope.schema) ||
-        typeof envelope.data !== 'object' ||
-        envelope.data === null
-    ) {
-        return {};
-    }
-    return envelope.data;
 }
 
 export function applyHomeSeo() {
@@ -127,7 +115,7 @@ export function applyCategorySeo(category) {
 
 export function applyArticleSeo(article) {
     const title = `${article.title} | Logos`;
-    const profile = profileData(article);
+    const profile = getPublicationProfile(article);
     const description = profile.abstract || article.excerpt || `Материал «${article.title}» на Logos.`;
     const url = canonicalUrl();
 

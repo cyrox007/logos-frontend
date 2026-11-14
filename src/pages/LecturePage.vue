@@ -1,11 +1,7 @@
 <template>
     <main class="catalog-page">
         <div class="container">
-            <nav class="breadcrumbs" aria-label="Навигационная цепочка">
-                <router-link :to="{ name: 'home' }">Главная</router-link>
-                <span class="breadcrumbs__separator" aria-hidden="true">/</span>
-                <span aria-current="page">Каталог знаний</span>
-            </nav>
+            <PageBreadcrumbs :items="breadcrumbs" />
             <header class="catalog-page__header">
                 <div>
                     <span class="eyebrow">Темы и направления</span>
@@ -20,10 +16,7 @@
                     <h2>Все рубрики</h2>
                     <p v-if="!isLoading && !error" class="catalog-page__count">{{ categories.length }} {{ rubricWord(categories.length) }}</p>
                 </div>
-                <label class="search-field">
-                    <span aria-hidden="true">⌕</span>
-                    <input v-model.trim="query" type="search" placeholder="Найти рубрику..." aria-label="Поиск по рубрикам">
-                </label>
+                <SearchField v-model="query" placeholder="Найти рубрику..." label="Поиск по рубрикам" />
             </div>
 
             <div v-if="isLoading" class="state-card" role="status">Загружаем рубрики…</div>
@@ -38,25 +31,25 @@
 </template>
 
 <script>
-import CategoryArticles from '@/components/Articles/CategoryArticles.vue';
+import CategoryArticles from '@/components/knowledge/CategoryArticles.vue';
+import PageBreadcrumbs from '@/components/ui/PageBreadcrumbs.vue';
+import SearchField from '@/components/ui/SearchField.vue';
+import { filterByFields, russianPlural } from '@/domain/publication.mjs';
 import PublicContentService from '@/API/PublicContentService';
 import { applyCatalogSeo } from '@/seo';
 
 export default {
     name: 'LecturePage',
-    components: { CategoryArticles },
+    components: { CategoryArticles, PageBreadcrumbs, SearchField },
     data() {
-        return { isLoading: true, error: '', categories: [], query: '' };
+        return {
+            isLoading: true, error: '', categories: [], query: '',
+            breadcrumbs: [{ label: 'Главная', to: { name: 'home' } }, { label: 'Каталог знаний' }]
+        };
     },
     computed: {
         filteredCategories() {
-            const term = this.query.toLocaleLowerCase('ru-RU');
-            if (!term) return this.categories;
-            return this.categories.filter(category =>
-                [category.title, category.description].some(value =>
-                    String(value || '').toLocaleLowerCase('ru-RU').includes(term)
-                )
-            );
+            return filterByFields(this.categories, this.query, ['title', 'description']);
         }
     },
     async created() {
@@ -73,9 +66,7 @@ export default {
     },
     methods: {
         rubricWord(count) {
-            if (count % 10 === 1 && count % 100 !== 11) return 'рубрика';
-            if (count % 10 >= 2 && count % 10 <= 4 && (count % 100 < 12 || count % 100 > 14)) return 'рубрики';
-            return 'рубрик';
+            return russianPlural(count, ['рубрика', 'рубрики', 'рубрик']);
         }
     }
 };

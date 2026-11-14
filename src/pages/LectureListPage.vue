@@ -1,13 +1,7 @@
 <template>
     <main class="publication-list">
         <div class="container">
-            <nav class="breadcrumbs" aria-label="Навигационная цепочка">
-                <router-link :to="{ name: 'home' }">Главная</router-link>
-                <span class="breadcrumbs__separator" aria-hidden="true">/</span>
-                <router-link :to="{ name: 'lecture' }">Каталог знаний</router-link>
-                <span class="breadcrumbs__separator" aria-hidden="true">/</span>
-                <span aria-current="page">{{ categoryTitle }}</span>
-            </nav>
+            <PageBreadcrumbs :items="breadcrumbs" />
 
             <header class="publication-list__header">
                 <span class="eyebrow">Рубрика библиотеки</span>
@@ -21,10 +15,7 @@
                     <h2>Материалы рубрики</h2>
                     <p v-if="!isLoading && !error">{{ articles.length }} {{ materialWord(articles.length) }}</p>
                 </div>
-                <label class="search-field">
-                    <span aria-hidden="true">⌕</span>
-                    <input v-model.trim="query" type="search" placeholder="Поиск по материалам..." aria-label="Поиск по материалам рубрики">
-                </label>
+                <SearchField v-model="query" placeholder="Поиск по материалам..." label="Поиск по материалам рубрики" />
             </div>
 
             <div v-if="isLoading" class="state-card" role="status">Загружаем публикации…</div>
@@ -41,25 +32,29 @@
 </template>
 
 <script>
-import ArticleElement from '@/components/Articles/ArticleElement.vue';
+import ArticleElement from '@/components/knowledge/ArticleElement.vue';
+import PageBreadcrumbs from '@/components/ui/PageBreadcrumbs.vue';
+import SearchField from '@/components/ui/SearchField.vue';
+import { filterByFields, russianPlural } from '@/domain/publication.mjs';
 import PublicContentService from '@/API/PublicContentService';
 import { applyCategorySeo } from '@/seo';
 
 export default {
     name: 'LectureListPage',
-    components: { ArticleElement },
+    components: { ArticleElement, PageBreadcrumbs, SearchField },
     data() {
         return { isLoading: true, error: '', categoryTitle: '', categoryDescription: '', articles: [], query: '' };
     },
     computed: {
+        breadcrumbs() {
+            return [
+                { label: 'Главная', to: { name: 'home' } },
+                { label: 'Каталог знаний', to: { name: 'lecture' } },
+                { label: this.categoryTitle }
+            ];
+        },
         filteredArticles() {
-            const term = this.query.toLocaleLowerCase('ru-RU');
-            if (!term) return this.articles;
-            return this.articles.filter(item =>
-                [item.title, item.excerpt].some(value =>
-                    String(value || '').toLocaleLowerCase('ru-RU').includes(term)
-                )
-            );
+            return filterByFields(this.articles, this.query, ['title', 'excerpt']);
         }
     },
     watch: {
@@ -96,9 +91,7 @@ export default {
             }
         },
         materialWord(count) {
-            if (count % 10 === 1 && count % 100 !== 11) return 'материал';
-            if (count % 10 >= 2 && count % 10 <= 4 && (count % 100 < 12 || count % 100 > 14)) return 'материала';
-            return 'материалов';
+            return russianPlural(count, ['материал', 'материала', 'материалов']);
         }
     }
 };

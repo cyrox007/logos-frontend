@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import CategoryArticles from '@/components/Articles/CategoryArticles.vue';
+import CategoryArticles from '@/components/knowledge/CategoryArticles.vue';
 
 export default {
     name: 'HomeCategories',

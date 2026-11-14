@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import LastArticles from '@/components/Articles/LastArticles.vue';
+import LastArticles from '@/components/knowledge/LastArticles.vue';
 
 export default {
     name: 'HomeLatest',
