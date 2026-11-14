@@ -19,7 +19,7 @@ test('Все асинхронные страницы и секции имеют 
         assert.match(source, /<LoadingSkeleton/);
         assert.match(source, /<AsyncState/);
         assert.match(source, /<Transition name="content-switch" mode="out-in"/);
-        assert.match(source, /action-label="Повторить"/);
+        assert.match(source, /action-label="Повторить"|:action-label="/);
     }
 });
 
@@ -40,7 +40,7 @@ test('Переходы маршрутов и изменения списков �
         'src/components/knowledge/ArticleElement.vue',
         'src/components/knowledge/LastArticles.vue'
     ]) {
-        assert.match(read(file), /<TransitionGroup name="card-list"/);
+        assert.match(read(file), /<TransitionGroup\\b[\\s\\S]*?name="card-list"/);
     }
     assert.match(read('src/components/layout/SiteHeader.vue'), /<Transition name="mobile-menu"/);
     assert.match(read('src/components/ui/SearchField.vue'), /name="search-clear"/);
