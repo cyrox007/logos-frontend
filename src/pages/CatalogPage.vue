@@ -28,17 +28,44 @@
                 />
             </div>
 
-            <div v-if="isLoading" class="state-card" role="status">Загружаем рубрики…</div>
-            <div v-else-if="error" class="state-card state-card--error" role="alert">
-                {{ error }}
-            </div>
-            <div v-else-if="filteredCategories.length" class="catalog-page__grid">
-                <CategoryArticles :categories="filteredCategories" />
-            </div>
-            <div v-else-if="query" class="state-card">
-                По запросу «{{ query }}» рубрики не найдены. Попробуйте другое слово.
-            </div>
-            <div v-else class="state-card">Пока нет опубликованных рубрик.</div>
+            <Transition name="content-switch" mode="out-in">
+                <LoadingSkeleton
+                    v-if="isLoading"
+                    key="loading"
+                    label="Загружаем рубрики…"
+                    variant="grid"
+                />
+                <AsyncState
+                    v-else-if="error"
+                    key="error"
+                    type="error"
+                    title="Не удалось загрузить каталог"
+                    :message="error"
+                    action-label="Повторить"
+                    @action="loadCategories"
+                />
+                <CategoryArticles
+                    v-else-if="filteredCategories.length"
+                    key="content"
+                    :categories="filteredCategories"
+                />
+                <AsyncState
+                    v-else-if="query"
+                    key="search-empty"
+                    title="Рубрики не найдены"
+                    :message="
+                        'По запросу «' + query + '» ничего не найдено. Попробуйте другое слово.'
+                    "
+                    action-label="Сбросить поиск"
+                    @action="query = ''"
+                />
+                <AsyncState
+                    v-else
+                    key="empty"
+                    title="Каталог пока пуст"
+                    message="Рубрики появятся здесь после публикации первых материалов."
+                />
+            </Transition>
         </div>
     </main>
 </template>
@@ -47,13 +74,15 @@
 import CategoryArticles from '@/components/knowledge/CategoryArticles.vue';
 import PageBreadcrumbs from '@/components/ui/PageBreadcrumbs.vue';
 import SearchField from '@/components/ui/SearchField.vue';
+import LoadingSkeleton from '@/components/ui/LoadingSkeleton.vue';
+import AsyncState from '@/components/ui/AsyncState.vue';
 import { filterByFields, russianPlural } from '@/domain/publication.mjs';
 import PublicContentService from '@/API/PublicContentService';
 import { applyCatalogSeo } from '@/seo';
 
 export default {
     name: 'CatalogPage',
-    components: { CategoryArticles, PageBreadcrumbs, SearchField },
+    components: { CategoryArticles, PageBreadcrumbs, SearchField, LoadingSkeleton, AsyncState },
     data() {
         return {
             isLoading: true,
@@ -68,19 +97,25 @@ export default {
             return filterByFields(this.categories, this.query, ['title', 'description']);
         }
     },
-    async created() {
+    created() {
         applyCatalogSeo();
-        try {
-            const response = await PublicContentService.getCategories();
-            this.categories = response.data.items || [];
-        } catch (error) {
-            console.error(error);
-            this.error = 'Не удалось загрузить рубрики. Попробуйте обновить страницу.';
-        } finally {
-            this.isLoading = false;
-        }
+        this.loadCategories();
     },
     methods: {
+        async loadCategories() {
+            this.isLoading = true;
+            this.error = '';
+            try {
+                const response = await PublicContentService.getCategories();
+                this.categories = response.data.items || [];
+            } catch (error) {
+                console.error(error);
+                this.error =
+                    'Не удалось загрузить рубрики. Проверьте соединение и повторите попытку.';
+            } finally {
+                this.isLoading = false;
+            }
+        },
         rubricWord(count) {
             return russianPlural(count, ['рубрика', 'рубрики', 'рубрик']);
         }

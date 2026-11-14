@@ -5,8 +5,14 @@
             :categories="categories"
             :categories-loading="categoriesLoading"
             :categories-error="categoriesError"
+            @retry="loadCategories"
         />
-        <HomeLatest :posts="posts" :posts-loading="postsLoading" :posts-error="postsError" />
+        <HomeLatest
+            :posts="posts"
+            :posts-loading="postsLoading"
+            :posts-error="postsError"
+            @retry="loadPosts"
+        />
         <HomePrinciples />
     </main>
 </template>
@@ -38,6 +44,8 @@ export default {
     },
     methods: {
         async loadCategories() {
+            this.categoriesLoading = true;
+            this.categoriesError = '';
             try {
                 const response = await PublicContentService.getCategories();
                 this.categories = response.data.items || [];
@@ -50,6 +58,8 @@ export default {
             }
         },
         async loadPosts() {
+            this.postsLoading = true;
+            this.postsError = '';
             try {
                 const response = await PublicContentService.getBootstrap(6);
                 this.posts = response.data.latest_publications || [];

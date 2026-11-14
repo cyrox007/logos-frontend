@@ -1,33 +1,49 @@
 <template>
-    <article
-        v-for="(category, index) in categories"
-        :key="category.id || category.slug"
-        class="category-card"
+    <TransitionGroup
+        name="card-list"
+        tag="div"
+        :class="layout === 'home' ? 'home-categories__grid' : 'catalog-page__grid'"
+        appear
     >
-        <router-link
-            class="category-card__link"
-            :to="{ name: 'category', params: { catName: category.slug } }"
+        <article
+            v-for="(category, index) in categories"
+            :key="category.id || category.slug"
+            class="category-card"
+            :style="{ '--item-index': Math.min(index, 6) }"
         >
-            <div class="category-card__top">
-                <span class="category-card__number">{{ String(index + 1).padStart(2, '0') }}</span>
-                <span class="category-card__symbol" aria-hidden="true">✦</span>
-            </div>
-            <div class="category-card__content">
-                <h3>{{ category.title }}</h3>
-                <p>
-                    {{ category.description || 'Откройте материалы и исследования по этой теме.' }}
-                </p>
-            </div>
-            <span class="category-card__more">К материалам <span aria-hidden="true">↗</span></span>
-        </router-link>
-    </article>
+            <router-link
+                class="category-card__link"
+                :to="{ name: 'category', params: { catName: category.slug } }"
+            >
+                <div class="category-card__top">
+                    <span class="category-card__number">{{
+                        String(index + 1).padStart(2, '0')
+                    }}</span>
+                    <span class="category-card__symbol" aria-hidden="true">✦</span>
+                </div>
+                <div class="category-card__content">
+                    <h3>{{ category.title }}</h3>
+                    <p>
+                        {{
+                            category.description ||
+                            'Откройте материалы и исследования по этой теме.'
+                        }}
+                    </p>
+                </div>
+                <span class="category-card__more"
+                    >К материалам <span aria-hidden="true">↗</span></span
+                >
+            </router-link>
+        </article>
+    </TransitionGroup>
 </template>
 
 <script>
 export default {
     name: 'CategoryArticles',
     props: {
-        categories: { type: Array, default: () => [] }
+        categories: { type: Array, default: () => [] },
+        layout: { type: String, default: 'catalog' }
     }
 };
 </script>

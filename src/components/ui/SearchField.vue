@@ -1,5 +1,5 @@
 <template>
-    <label class="search-field">
+    <div class="search-field">
         <span aria-hidden="true">⌕</span>
         <input
             type="search"
@@ -8,7 +8,18 @@
             :aria-label="label"
             @input="$emit('update:modelValue', $event.target.value)"
         />
-    </label>
+        <Transition name="search-clear">
+            <button
+                v-if="modelValue"
+                type="button"
+                class="search-field__clear"
+                aria-label="Очистить поиск"
+                @click="$emit('update:modelValue', '')"
+            >
+                ×
+            </button>
+        </Transition>
+    </div>
 </template>
 
 <script>

@@ -13,24 +13,43 @@
                     >Перейти в каталог <span aria-hidden="true">↗</span></router-link
                 >
             </div>
-            <div v-if="postsLoading" class="state-card" role="status">Загружаем публикации…</div>
-            <div v-else-if="postsError" class="state-card state-card--error" role="alert">
-                {{ postsError }}
-            </div>
-            <LastArticles v-else-if="posts.length" :posts="posts" />
-            <div v-else class="state-card">
-                Публикации появятся здесь после выхода первых материалов.
-            </div>
+            <Transition name="content-switch" mode="out-in">
+                <LoadingSkeleton
+                    v-if="postsLoading"
+                    key="loading"
+                    variant="latest"
+                    label="Загружаем публикации…"
+                />
+                <AsyncState
+                    v-else-if="postsError"
+                    key="error"
+                    type="error"
+                    title="Не удалось загрузить публикации"
+                    :message="postsError"
+                    action-label="Повторить"
+                    @action="$emit('retry')"
+                />
+                <LastArticles v-else-if="posts.length" key="content" :posts="posts" />
+                <AsyncState
+                    v-else
+                    key="empty"
+                    title="Новых материалов пока нет"
+                    message="Публикации появятся здесь после выхода первых статей и исследований."
+                />
+            </Transition>
         </div>
     </section>
 </template>
 
 <script>
 import LastArticles from '@/components/knowledge/LastArticles.vue';
+import LoadingSkeleton from '@/components/ui/LoadingSkeleton.vue';
+import AsyncState from '@/components/ui/AsyncState.vue';
 
 export default {
     name: 'HomeLatest',
-    components: { LastArticles },
+    components: { LastArticles, LoadingSkeleton, AsyncState },
+    emits: ['retry'],
     props: {
         posts: { type: Array, default: () => [] },
         postsLoading: { type: Boolean, default: false },

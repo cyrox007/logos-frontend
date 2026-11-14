@@ -24,17 +24,42 @@
                 />
             </div>
 
-            <div v-if="isLoading" class="state-card" role="status">Загружаем публикации…</div>
-            <div v-else-if="error" class="state-card state-card--error" role="alert">
-                {{ error }}
-            </div>
-            <div v-else-if="filteredArticles.length" class="publication-list__items">
-                <ArticleElement :articles="filteredArticles" />
-            </div>
-            <div v-else-if="query" class="state-card">
-                По запросу «{{ query }}» материалы не найдены.
-            </div>
-            <div v-else class="state-card">В этой рубрике пока нет опубликованных материалов.</div>
+            <Transition name="content-switch" mode="out-in">
+                <LoadingSkeleton
+                    v-if="isLoading"
+                    key="loading"
+                    variant="list"
+                    label="Загружаем публикации…"
+                />
+                <AsyncState
+                    v-else-if="error"
+                    key="error"
+                    type="error"
+                    title="Не удалось загрузить рубрику"
+                    :message="error"
+                    action-label="Повторить"
+                    @action="loadData"
+                />
+                <ArticleElement
+                    v-else-if="filteredArticles.length"
+                    key="content"
+                    :articles="filteredArticles"
+                />
+                <AsyncState
+                    v-else-if="query"
+                    key="search-empty"
+                    title="Материалы не найдены"
+                    :message="'По запросу «' + query + '» ничего не найдено.'"
+                    action-label="Сбросить поиск"
+                    @action="query = ''"
+                />
+                <AsyncState
+                    v-else
+                    key="empty"
+                    title="В рубрике пока нет материалов"
+                    message="Опубликованные статьи и исследования появятся здесь."
+                />
+            </Transition>
 
             <router-link class="publication-list__back text-link" :to="{ name: 'catalog' }"
                 >← Вернуться к каталогу</router-link
@@ -47,13 +72,15 @@
 import ArticleElement from '@/components/knowledge/ArticleElement.vue';
 import PageBreadcrumbs from '@/components/ui/PageBreadcrumbs.vue';
 import SearchField from '@/components/ui/SearchField.vue';
+import LoadingSkeleton from '@/components/ui/LoadingSkeleton.vue';
+import AsyncState from '@/components/ui/AsyncState.vue';
 import { filterByFields, russianPlural } from '@/domain/publication.mjs';
 import PublicContentService from '@/API/PublicContentService';
 import { applyCategorySeo } from '@/seo';
 
 export default {
     name: 'CategoryPage',
-    components: { ArticleElement, PageBreadcrumbs, SearchField },
+    components: { ArticleElement, PageBreadcrumbs, SearchField, LoadingSkeleton, AsyncState },
     data() {
         return {
             isLoading: true,

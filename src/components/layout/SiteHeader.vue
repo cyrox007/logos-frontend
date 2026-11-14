@@ -37,22 +37,28 @@
                 <span aria-hidden="true">{{ menuOpen ? '×' : '☰' }}</span>
             </button>
         </div>
-        <nav
-            v-if="menuOpen"
-            id="logos-mobile-nav"
-            class="mobile-nav"
-            aria-label="Мобильная навигация"
-        >
-            <div class="container mobile-nav__inner">
-                <router-link :to="{ name: 'home' }" @click="menuOpen = false">Главная</router-link>
-                <router-link :to="{ name: 'catalog' }" @click="menuOpen = false"
-                    >Каталог знаний</router-link
-                >
-                <router-link :to="{ name: 'home', hash: '#principles' }" @click="menuOpen = false"
-                    >О проекте</router-link
-                >
-            </div>
-        </nav>
+        <Transition name="mobile-menu">
+            <nav
+                v-if="menuOpen"
+                id="logos-mobile-nav"
+                class="mobile-nav"
+                aria-label="Мобильная навигация"
+            >
+                <div class="container mobile-nav__inner">
+                    <router-link :to="{ name: 'home' }" @click="menuOpen = false"
+                        >Главная</router-link
+                    >
+                    <router-link :to="{ name: 'catalog' }" @click="menuOpen = false"
+                        >Каталог знаний</router-link
+                    >
+                    <router-link
+                        :to="{ name: 'home', hash: '#principles' }"
+                        @click="menuOpen = false"
+                        >О проекте</router-link
+                    >
+                </div>
+            </nav>
+        </Transition>
     </header>
 </template>
 
@@ -134,6 +140,7 @@ export default {
     font-size: 14px;
     font-weight: 600;
     text-decoration: none;
+    transition: color 0.2s ease;
 }
 .site-header__nav a:hover,
 .site-header__nav a.is-current {
@@ -147,6 +154,16 @@ export default {
     right: 0;
     height: 2px;
     background: var(--color-gold);
+    transform-origin: center;
+    animation: nav-underline-in 0.2s ease both;
+}
+@keyframes nav-underline-in {
+    from {
+        transform: scaleX(0);
+    }
+    to {
+        transform: scaleX(1);
+    }
 }
 .site-header__action {
     padding: 11px 16px;
@@ -157,6 +174,7 @@ export default {
     font-weight: 700;
     text-decoration: none;
     white-space: nowrap;
+    transition: background 0.2s ease, border-color 0.2s ease;
 }
 .site-header__action:hover {
     background: var(--color-accent-soft);
@@ -170,10 +188,16 @@ export default {
     color: var(--color-accent-dark);
     font-weight: 700;
     cursor: pointer;
+    transition: color 0.2s ease;
 }
 .mobile-nav {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
     border-top: 1px solid var(--color-border);
     background: #fff;
+    box-shadow: var(--shadow-soft);
 }
 .mobile-nav__inner {
     display: grid;
@@ -189,6 +213,17 @@ export default {
 }
 .mobile-nav a.router-link-active {
     color: var(--color-accent);
+}
+.mobile-nav a {
+    transition: color 0.2s ease, background 0.2s ease;
+}
+.mobile-nav a:hover {
+    background: var(--color-accent-soft);
+}
+@media (min-width: 651px) {
+    .mobile-nav {
+        display: none;
+    }
 }
 @media (max-width: 900px) {
     .site-header__nav {
