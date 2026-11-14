@@ -38,8 +38,10 @@ function canonicalUrl(path = window.location.pathname) {
 // Единственная точка обновления title, canonical, OpenGraph и JSON-LD.
 function applySeo(metadata) {
     document.title = metadata.title;
-    ensureMeta('meta[name="description"]', { name: 'description' })
-        .setAttribute('content', metadata.description);
+    ensureMeta('meta[name="description"]', { name: 'description' }).setAttribute(
+        'content',
+        metadata.description
+    );
     setCanonical(metadata.url);
 
     const properties = {
@@ -50,8 +52,7 @@ function applySeo(metadata) {
         'og:url': metadata.url
     };
     Object.entries(properties).forEach(([property, value]) => {
-        ensureMeta(`meta[property="${property}"]`, { property })
-            .setAttribute('content', value);
+        ensureMeta(`meta[property="${property}"]`, { property }).setAttribute('content', value);
     });
 
     setStructuredData(metadata.structuredData);

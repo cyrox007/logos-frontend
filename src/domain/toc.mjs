@@ -13,9 +13,11 @@ export function buildArticleToc(root) {
 
             let id = heading.id;
             if (!id) {
-                const stem = title.toLocaleLowerCase('ru-RU')
-                    .replace(/[^a-zа-яё0-9]+/gi, '-')
-                    .replace(/^-|-$/g, '') || 'razdel';
+                const stem =
+                    title
+                        .toLocaleLowerCase('ru-RU')
+                        .replace(/[^a-zа-яё0-9]+/gi, '-')
+                        .replace(/^-|-$/g, '') || 'razdel';
 
                 id = stem;
                 let suffix = 2;

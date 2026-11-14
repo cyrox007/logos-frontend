@@ -26,9 +26,10 @@ test('Оглавление формируется по H2 и H3 и сохран�
 
 test('Повторяющиеся заголовки получают уникальные ID', () => {
     const nodes = [heading('H2', 'История'), heading('H2', 'История'), heading('H3', 'История')];
-    assert.deepEqual(buildArticleToc(fixture(nodes)).map(item => item.id), [
-        'история', 'история-2', 'история-3'
-    ]);
+    assert.deepEqual(
+        buildArticleToc(fixture(nodes)).map(item => item.id),
+        ['история', 'история-2', 'история-3']
+    );
 });
 
 test('Готовые якоря остаются, занятые ID пропускаются', () => {

@@ -3,12 +3,19 @@ import { getPublicationProfile } from '../domain/publication.mjs';
 // Данные для поисковых систем формируются без обращения к DOM.
 export function homeSeo(url) {
     const title = 'Logos — библиотека знаний и исследований';
-    const description = 'Logos — библиотека знаний, тематических материалов, источников и самостоятельных исследований.';
+    const description =
+        'Logos — библиотека знаний, тематических материалов, источников и самостоятельных исследований.';
     return {
-        title, description, url, ogType: 'website',
+        title,
+        description,
+        url,
+        ogType: 'website',
         structuredData: {
-            '@context': 'https://schema.org', '@type': 'WebSite',
-            name: 'Logos', url, description
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            name: 'Logos',
+            url,
+            description
         }
     };
 }
@@ -17,10 +24,16 @@ export function catalogSeo(url) {
     const title = 'База знаний | Logos';
     const description = 'Рубрики, статьи, исследования и источники библиотеки Logos.';
     return {
-        title, description, url, ogType: 'website',
+        title,
+        description,
+        url,
+        ogType: 'website',
         structuredData: {
-            '@context': 'https://schema.org', '@type': 'CollectionPage',
-            name: title, url, description
+            '@context': 'https://schema.org',
+            '@type': 'CollectionPage',
+            name: title,
+            url,
+            description
         }
     };
 }
@@ -30,10 +43,16 @@ export function categorySeo(category, url) {
     const title = `${name} | Logos`;
     const description = category?.description || `Материалы рубрики «${name}» на Logos.`;
     return {
-        title, description, url, ogType: 'website',
+        title,
+        description,
+        url,
+        ogType: 'website',
         structuredData: {
-            '@context': 'https://schema.org', '@type': 'CollectionPage',
-            name: title, url, description
+            '@context': 'https://schema.org',
+            '@type': 'CollectionPage',
+            name: title,
+            url,
+            description
         }
     };
 }
@@ -41,9 +60,13 @@ export function categorySeo(category, url) {
 export function articleSeo(article, url, rootUrl) {
     const profile = getPublicationProfile(article);
     const title = `${article.title} | Logos`;
-    const description = profile.abstract || article.excerpt || `Материал «${article.title}» на Logos.`;
+    const description =
+        profile.abstract || article.excerpt || `Материал «${article.title}» на Logos.`;
     return {
-        title, description, url, ogType: 'article',
+        title,
+        description,
+        url,
+        ogType: 'article',
         structuredData: {
             '@context': 'https://schema.org',
             '@type': 'Article',

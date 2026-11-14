@@ -14,7 +14,10 @@ test('Главная использует URL собственного доме�
 
 test('У каталога и рубрики разные заголовки и корректные canonical', () => {
     const catalog = catalogSeo(rootUrl + 'catalog');
-    const category = categorySeo({ title: 'История', description: 'Исследования' }, rootUrl + 'catalog/history');
+    const category = categorySeo(
+        { title: 'История', description: 'Исследования' },
+        rootUrl + 'catalog/history'
+    );
     assert.notEqual(catalog.title, category.title);
     assert.equal(category.description, 'Исследования');
     assert.equal(category.structuredData['@type'], 'CollectionPage');
@@ -23,10 +26,12 @@ test('У каталога и рубрики разные заголовки и �
 
 test('Метаданные статьи используют поддерживаемый профиль автора', () => {
     const article = {
-        title: 'Исследование', excerpt: 'Краткое описание',
+        title: 'Исследование',
+        excerpt: 'Краткое описание',
         published_at: '2026-11-14T10:00:00Z',
         data: {
-            schema: 'logos.article', version: 1,
+            schema: 'logos.article',
+            version: 1,
             data: { abstract: 'Аннотация', speaker: 'Автор', keywords: ['история', 'архив'] }
         }
     };
@@ -40,7 +45,8 @@ test('Метаданные статьи используют поддержив�
 
 test('Неподдерживаемый профиль не попадает в метаданные', () => {
     const article = {
-        title: 'Лекция', excerpt: 'Описание',
+        title: 'Лекция',
+        excerpt: 'Описание',
         data: { schema: 'logos.article', version: 2, data: { abstract: 'Чужое поле' } }
     };
     assert.equal(articleSeo(article, publicationUrl, rootUrl).description, 'Описание');
