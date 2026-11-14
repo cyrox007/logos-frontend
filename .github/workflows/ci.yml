@@ -28,11 +28,6 @@ jobs:
       - name: Проверить правила ESLint
         run: npm run lint
 
-      - name: Показать правки форматирования
-        run: |
-          npm run format
-          git diff -- src tests
-
       - name: Проверить форматирование
         run: npm run format:check
 
