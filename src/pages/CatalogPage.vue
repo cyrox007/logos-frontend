@@ -82,6 +82,7 @@ import { applyCatalogSeo } from '@/seo';
 
 export default {
     name: 'CatalogPage',
+    emits: ['loading-change'],
     components: { CategoryArticles, PageBreadcrumbs, SearchField, LoadingSkeleton, AsyncState },
     data() {
         return {
@@ -103,6 +104,7 @@ export default {
     },
     methods: {
         async loadCategories() {
+            this.$emit('loading-change', true);
             this.isLoading = true;
             this.error = '';
             try {
@@ -114,6 +116,7 @@ export default {
                     'Не удалось загрузить рубрики. Проверьте соединение и повторите попытку.';
             } finally {
                 this.isLoading = false;
+                this.$emit('loading-change', false);
             }
         },
         rubricWord(count) {

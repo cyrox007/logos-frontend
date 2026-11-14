@@ -7,6 +7,10 @@
         aria-busy="true"
     >
         <span class="sr-only">{{ label }}</span>
+        <div class="loading-skeleton__identity" aria-hidden="true">
+            <KnowledgeLoader variant="compact" />
+            <span>{{ label }}</span>
+        </div>
         <div v-if="variant === 'article'" class="loading-skeleton__article" aria-hidden="true">
             <div class="loading-skeleton__sheet">
                 <div class="skeleton-line skeleton-line--short"></div>
@@ -32,7 +36,12 @@
             </div>
         </div>
         <div v-else class="loading-skeleton__cards" aria-hidden="true">
-            <div v-for="index in count" :key="index" class="loading-skeleton__card">
+            <div
+                v-for="index in count"
+                :key="index"
+                class="loading-skeleton__card"
+                :style="{ '--placeholder-index': index - 1 }"
+            >
                 <div class="skeleton-line skeleton-line--short"></div>
                 <div class="skeleton-line skeleton-line--heading"></div>
                 <div class="skeleton-line skeleton-line--long"></div>
@@ -43,8 +52,11 @@
 </template>
 
 <script>
+import KnowledgeLoader from '@/components/ui/KnowledgeLoader.vue';
+
 export default {
     name: 'LoadingSkeleton',
+    components: { KnowledgeLoader },
     props: {
         variant: { type: String, default: 'grid' },
         count: { type: Number, default: 3 },

@@ -80,6 +80,7 @@ import { applyCategorySeo } from '@/seo';
 
 export default {
     name: 'CategoryPage',
+    emits: ['loading-change'],
     components: { ArticleElement, PageBreadcrumbs, SearchField, LoadingSkeleton, AsyncState },
     data() {
         return {
@@ -114,6 +115,7 @@ export default {
     methods: {
         async loadData() {
             const slug = this.$route.params.catName;
+            this.$emit('loading-change', true);
             this.isLoading = true;
             this.error = '';
             this.query = '';
@@ -139,7 +141,10 @@ export default {
                 console.error(error);
                 this.error = 'Не удалось загрузить материалы рубрики.';
             } finally {
-                if (slug === this.$route.params.catName) this.isLoading = false;
+                if (slug === this.$route.params.catName) {
+                    this.isLoading = false;
+                    this.$emit('loading-change', false);
+                }
             }
         },
         materialWord(count) {

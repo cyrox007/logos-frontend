@@ -76,6 +76,7 @@ import ArticleAside from '@/components/article/ArticleAside.vue';
 
 export default {
     name: 'PublicationPage',
+    emits: ['loading-change'],
     components: {
         PageBreadcrumbs,
         ArticleHeader,
@@ -130,6 +131,7 @@ export default {
         },
         async loadArticle() {
             const slug = this.$route.params.slug;
+            this.$emit('loading-change', true);
             this.isLoading = true;
             this.article = null;
             this.tocItems = [];
@@ -155,6 +157,7 @@ export default {
             } finally {
                 if (slug === this.$route.params.slug) {
                     this.isLoading = false;
+                    this.$emit('loading-change', false);
                     await this.$nextTick();
                     if (slug === this.$route.params.slug) {
                         this.buildToc();
