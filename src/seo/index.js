@@ -60,8 +60,8 @@ function profileData(article) {
 }
 
 export function applyHomeSeo() {
-    const title = 'Logos — база знаний и публикации';
-    const description = 'Logos — самостоятельная публичная витрина материалов и тематических публикаций.';
+    const title = 'Logos — библиотека знаний и исследований';
+    const description = 'Logos — библиотека знаний, тематических материалов, источников и самостоятельных исследований.';
 
     document.title = title;
     setMeta('description', description);
@@ -82,8 +82,8 @@ export function applyHomeSeo() {
 
 export function applyCatalogSeo() {
     const title = 'База знаний | Logos';
-    const description = 'Тематические рубрики и публикации Logos.';
-    const url = canonicalUrl('/lecture');
+    const description = 'Рубрики, статьи, исследования и источники библиотеки Logos.';
+    const url = canonicalUrl('/catalog');
 
     document.title = title;
     setMeta('description', description);

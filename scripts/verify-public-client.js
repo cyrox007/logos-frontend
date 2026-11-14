@@ -8,6 +8,38 @@ const absent = relative => !fs.existsSync(path.join(root, relative));
 
 const checks = [
     [
+        'каталог имеет собственные адреса и поддержку старых ссылок',
+        () => {
+            const router = read('src/router/index.js');
+            return router.includes("path: '/catalog'")
+                && router.includes("path: '/catalog/:catName'")
+                && router.includes("path: '/catalog/:catName/:slug'")
+                && router.includes("path: '/lecture'");
+        }
+    ],
+    [
+        'светлая изумрудная дизайн-система используется на всех страницах',
+        () => {
+            const app = read('src/App.vue');
+            const home = read('src/pages/MainPage.vue');
+            const catalog = read('src/pages/LecturePage.vue');
+            return app.includes('--color-accent: #267f5d')
+                && app.includes('--color-gold:')
+                && home.includes('CategoryArticles')
+                && catalog.includes('filteredCategories');
+        }
+    ],
+    [
+        'чтение статьи поддерживает оглавление и источники',
+        () => {
+            const article = read('src/pages/ArticlePage.vue');
+            return article.includes('buildToc()')
+                && article.includes('h2, h3')
+                && article.includes('bibliography')
+                && article.includes('aria-label="Оглавление статьи"');
+        }
+    ],
+    [
         'маршрутизатор содержит только публичные маршруты',
         () => {
             const router = read('src/router/index.js');
