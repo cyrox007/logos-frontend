@@ -8,7 +8,7 @@
                 aria-label="Logos — на главную"
             >
                 <span class="site-header__brand-mark">λ</span>
-                <span class="site-header__brand-name">λόγος<small>библиотека знаний</small></span>
+                <span class="site-header__brand-name">λόγος<small>православная библиотека</small></span>
             </router-link>
 
             <nav class="site-header__nav" aria-label="Основная навигация">

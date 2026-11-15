@@ -2,9 +2,9 @@ import { getPublicationProfile } from '../domain/publication.mjs';
 
 // Данные для поисковых систем формируются без обращения к DOM.
 export function homeSeo(url) {
-    const title = 'Logos — библиотека знаний и исследований';
+    const title = 'Православие и Логос — православная библиотека';
     const description =
-        'Logos — библиотека знаний, тематических материалов, источников и самостоятельных исследований.';
+        'Священное Писание, святоотеческие толкования, богослужение и история Православной Церкви.';
     return {
         title,
         description,
@@ -40,8 +40,11 @@ export function catalogSeo(url) {
 
 export function categorySeo(category, url) {
     const name = category?.title || 'База знаний';
-    const title = `${name} | Logos`;
-    const description = category?.description || `Материалы рубрики «${name}» на Logos.`;
+    const title = category?.seo?.title?.trim() || `${name} | Logos`;
+    const description =
+        category?.seo?.description?.trim() ||
+        category?.description?.trim() ||
+        `Материалы рубрики «${name}» на Logos.`;
     return {
         title,
         description,
@@ -59,9 +62,12 @@ export function categorySeo(category, url) {
 
 export function articleSeo(article, url, rootUrl) {
     const profile = getPublicationProfile(article);
-    const title = `${article.title} | Logos`;
+    const title = article.seo?.title?.trim() || `${article.title} | Logos`;
     const description =
-        profile.abstract || article.excerpt || `Материал «${article.title}» на Logos.`;
+        article.seo?.description?.trim() ||
+        profile.abstract?.trim() ||
+        article.excerpt?.trim() ||
+        `Материал «${article.title}» на Logos.`;
     return {
         title,
         description,
