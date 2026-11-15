@@ -3,9 +3,8 @@
         <div class="container home-hero__layout">
             <div class="home-hero__content">
                 <span class="eyebrow">Православная библиотека</span>
-                <h1>Православие <em>и Логос</em></h1>
                 <p>
-                    Священное Писание в свете Предания Церкви. Статьи о православной вере,
+                    Статьи о православной вере,
                     святых отцах, богослужении и церковной истории.
                 </p>
                 <div class="home-hero__actions">
