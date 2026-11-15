@@ -3,7 +3,7 @@
         <div class="container footer__inner">
             <div class="footer__identity">
                 <router-link :to="{ name: 'home' }" class="footer__logo">λόγος</router-link>
-                <p>Пространство знаний, источников и самостоятельного исследования.</p>
+                <p>Православная библиотека о Писании и жизни Церкви.</p>
             </div>
             <nav class="footer__links" aria-label="Навигация внизу страницы">
                 <router-link :to="{ name: 'home' }">Главная</router-link>
@@ -12,7 +12,7 @@
             </nav>
         </div>
         <div class="container footer__bottom">
-            <span>Logos · Независимая библиотека знаний</span>
+            <span>Православие и Логос</span>
             <span>Содержание и представление — Logos</span>
         </div>
     </footer>

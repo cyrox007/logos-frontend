@@ -2,9 +2,9 @@ import { getPublicationProfile } from '../domain/publication.mjs';
 
 // Данные для поисковых систем формируются без обращения к DOM.
 export function homeSeo(url) {
-    const title = 'Logos — библиотека знаний и исследований';
+    const title = 'Православие и Логос — православная библиотека';
     const description =
-        'Logos — библиотека знаний, тематических материалов, источников и самостоятельных исследований.';
+        'Священное Писание, святоотеческие толкования, богослужение и история Православной Церкви.';
     return {
         title,
         description,
